@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacts Manager</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #fcfcfd;
+      color: #111827;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+
+    .count-badge {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .sync-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: #f3f4f6;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .sync-status.online {
+      background: #ecfdf5;
+      color: #065f46;
+      border-color: #a7f3d0;
+    }
+
+    .sync-status.offline {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #9ca3af;
+    }
+
+    .sync-status.online .sync-dot {
+      background: #10b981;
+    }
+
+    .sync-status.offline .sync-dot {
+      background: #ef4444;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 13px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      background: #ffffff;
+      color: #374151;
+      border-color: #d1d5db;
+      transition: all 0.12s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      color: #111827;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+
+    .btn-primary:hover {
+      background: #1f2937;
+      border-color: #1f2937;
+      color: #ffffff;
+    }
+
+    .btn-success {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
+    }
+
+    .btn-success:hover {
+      background: #047857;
+      border-color: #047857;
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      background: #ffffff;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+
+    .btn-sm {
+      padding: 4px 9px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+
+    /* Filter & Search Bar */
+    .filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      font-size: 13.5px;
+      font-family: inherit;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      outline: none;
+      background: #ffffff;
+      color: #111827;
+      transition: border-color 0.12s ease;
+    }
+
+    .search-input:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 1px #111827;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+      font-size: 14px;
+    }
+
+    /* Multi-select Category Filters */
+    .filter-category-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .filter-section-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      min-width: 90px;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #4b5563;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.12s ease;
+    }
+
+    .filter-chip:hover {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .filter-chip.active {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+
+    .filter-chip.active .check-icon {
+      display: inline-block;
+    }
+
+    .check-icon {
+      display: none;
+      font-size: 10px;
+    }
+
+    .clear-filters-btn {
+      font-size: 11.5px;
+      color: #ef4444;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      margin-left: 6px;
+      padding: 2px 6px;
+    }
+
+    .clear-filters-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Table */
+    .table-container {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f9fafb;
+      padding: 10px 14px;
+      font-weight: 600;
+      color: #4b5563;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background-color: #fafbfc;
+    }
+
+    tr.selected td {
+      background-color: #eff6ff !important;
+    }
+
+    .name-cell {
+      font-weight: 600;
+      color: #111827;
+      cursor: pointer;
+    }
+
+    .name-cell:hover {
+      color: #2563eb;
+    }
+
+    .role-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #4f46e5;
+      background: #eef2ff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-top: 3px;
+    }
+
+    .empty-val {
+      color: #d1d5db;
+      font-style: italic;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .pagination-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.45);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      animation: modalFade 0.15s ease-out;
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+
+    .modal-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-counter {
+      font-size: 12.5px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9fafb;
+    }
+
+    /* Form Layout & Chip Buttons */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #4b5563;
+    }
+
+    .field-input {
+      padding: 7px 11px;
+      font-size: 13.5px;
+      font-family: inherit;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      outline: none;
+      color: #111827;
+      background: #ffffff;
+      transition: border-color 0.12s ease;
+    }
+
+    .field-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px #2563eb;
+    }
+
+    /* Preset Chips */
+    .chip-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      font-size: 11.5px;
+      font-weight: 500;
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.1s ease;
+    }
+
+    .chip:hover {
+      background: #e5e7eb;
+      color: #111827;
+      border-color: #d1d5db;
+    }
+
+    .chip.active {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+      font-weight: 600;
+    }
+
+    /* Combos Section */
+    .combos-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .combos-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .combo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 500;
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.1s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .combo-chip:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      transform: translateY(-1px);
+    }
+
+    .combo-chip:active {
+      transform: translateY(0);
+    }
+
+    /* Floating Batch Action Bar */
+    .batch-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #111827;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 500;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      opacity: 0;
+      pointer-events: none;
+      max-width: 92vw;
+      overflow-x: auto;
+    }
+
+    .batch-bar.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .batch-count {
+      font-size: 13px;
+      font-weight: 600;
+      padding-right: 8px;
+      border-right: 1px solid #374151;
+      white-space: nowrap;
+    }
+
+    .batch-btn {
+      background: #1f2937;
+      color: #f3f4f6;
+      border: 1px solid #374151;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.1s ease;
+    }
+
+    .batch-btn:hover {
+      background: #374151;
+      color: #ffffff;
+    }
+
+    .batch-btn-danger {
+      background: #7f1d1d;
+      border-color: #991b1b;
+      color: #fecaca;
+    }
+
+    .batch-btn-danger:hover {
+      background: #991b1b;
+      color: #ffffff;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #111827;
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.18s ease;
+      pointer-events: none;
+      z-index: 2000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hidden-file {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="title">Contacts</h1>
+        <span class="count-badge" id="contactCount">1,026 contacts</span>
+        <span class="sync-status" id="syncStatus" title="Status of Auto-saving to CSV files">
+          <span class="sync-dot"></span>
+          <span id="syncText">Checking auto-save...</span>
+        </span>
+      </div>
+      <div class="header-actions">
+        <input type="file" id="fileInput" class="hidden-file" accept=".csv">
+        <button class="btn" onclick="document.getElementById('fileInput').click()">Open CSV</button>
+        <button class="btn" onclick="openNewModal()">+ New Contact</button>
+        <button class="btn btn-primary" onclick="exportCsv()">Export CSV</button>
+      </div>
+    </header>
+
+    <!-- Search & Multi-Select Category Filters -->
+    <div class="filter-bar">
+      <div class="search-row">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search by name, company, role, location, phone..." oninput="onSearch()">
+        </div>
+      </div>
+
+      <!-- Category Filter Chips (Select More Than One Category) -->
+      <div class="filter-category-wrap">
+        <!-- Status & Completeness -->
+        <div class="filter-section-row">
+          <span class="filter-label">Filter By:</span>
+          <div class="filter-chips">
+            <span class="filter-chip" data-cat="company" onclick="toggleCategory('company')"><span class="check-icon">✓ </span>Has Company</span>
+            <span class="filter-chip" data-cat="nocompany" onclick="toggleCategory('nocompany')"><span class="check-icon">✓ </span>Missing Company</span>
+            <span class="filter-chip" data-cat="location" onclick="toggleCategory('location')"><span class="check-icon">✓ </span>Has Location</span>
+            <span class="filter-chip" data-cat="nolocation" onclick="toggleCategory('nolocation')"><span class="check-icon">✓ </span>Missing Location</span>
+            <span class="filter-chip" data-cat="phone" onclick="toggleCategory('phone')"><span class="check-icon">✓ </span>Has Phone</span>
+            <span class="filter-chip" data-cat="email" onclick="toggleCategory('email')"><span class="check-icon">✓ </span>Has Email</span>
+          </div>
+        </div>
+
+        <!-- Organizations -->
+        <div class="filter-section-row">
+          <span class="filter-label">Organization:</span>
+          <div class="filter-chips">
+            <span class="filter-chip" data-cat="org:mdu" onclick="toggleCategory('org:mdu')"><span class="check-icon">✓ </span>MDU</span>
+            <span class="filter-chip" data-cat="org:thb" onclick="toggleCategory('org:thb')"><span class="check-icon">✓ </span>THB College</span>
+            <span class="filter-chip" data-cat="org:rgu" onclick="toggleCategory('org:rgu')"><span class="check-icon">✓ </span>RGU</span>
+            <span class="filter-chip" data-cat="org:darrang" onclick="toggleCategory('org:darrang')"><span class="check-icon">✓ </span>Darrang College</span>
+            <span class="filter-chip" data-cat="org:jio" onclick="toggleCategory('org:jio')"><span class="check-icon">✓ </span>Reliance Jio</span>
+            <span class="filter-chip" data-cat="org:airtel" onclick="toggleCategory('org:airtel')"><span class="check-icon">✓ </span>Bharti Airtel</span>
+            <span class="filter-chip" data-cat="org:bank" onclick="toggleCategory('org:bank')"><span class="check-icon">✓ </span>Banks (SBI/Canara)</span>
+          </div>
+        </div>
+
+        <!-- Roles -->
+        <div class="filter-section-row">
+          <span class="filter-label">Role / Title:</span>
+          <div class="filter-chips">
+            <span class="filter-chip" data-cat="role:student" onclick="toggleCategory('role:student')"><span class="check-icon">✓ </span>Student</span>
+            <span class="filter-chip" data-cat="role:classmate" onclick="toggleCategory('role:classmate')"><span class="check-icon">✓ </span>Class/Batch-Mate</span>
+            <span class="filter-chip" data-cat="role:colleague" onclick="toggleCategory('role:colleague')"><span class="check-icon">✓ </span>Colleague</span>
+            <span class="filter-chip" data-cat="role:sinaki" onclick="toggleCategory('role:sinaki')"><span class="check-icon">✓ </span>Sinaki</span>
+            <span class="filter-chip" data-cat="role:relative" onclick="toggleCategory('role:relative')"><span class="check-icon">✓ </span>Relative</span>
+            <span class="filter-chip" data-cat="role:teacher" onclick="toggleCategory('role:teacher')"><span class="check-icon">✓ </span>Teacher/Prof/Scholar</span>
+          </div>
+        </div>
+
+        <!-- Location Towns -->
+        <div class="filter-section-row">
+          <span class="filter-label">City / Town:</span>
+          <div class="filter-chips">
+            <span class="filter-chip" data-cat="loc:rangachakua" onclick="toggleCategory('loc:rangachakua')"><span class="check-icon">✓ </span>Rangachakua</span>
+            <span class="filter-chip" data-cat="loc:jamugurihat" onclick="toggleCategory('loc:jamugurihat')"><span class="check-icon">✓ </span>Jamugurihat</span>
+            <span class="filter-chip" data-cat="loc:tezpur" onclick="toggleCategory('loc:tezpur')"><span class="check-icon">✓ </span>Tezpur</span>
+            <span class="filter-chip" data-cat="loc:guwahati" onclick="toggleCategory('loc:guwahati')"><span class="check-icon">✓ </span>Guwahati</span>
+            <span class="filter-chip" data-cat="loc:gohpur" onclick="toggleCategory('loc:gohpur')"><span class="check-icon">✓ </span>Gohpur</span>
+            <button class="clear-filters-btn" id="clearFiltersBtn" style="display:none;" onclick="clearAllFilters()">✕ Clear All Filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 36px; text-align: center;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th>
+            <th style="width: 25%;">Name</th>
+            <th style="width: 28%;">Company & Title</th>
+            <th style="width: 27%;">Location</th>
+            <th style="width: 15%;">Phone</th>
+            <th style="width: 50px; text-align: right;"></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Rendered via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <div id="pageInfo">Showing 1 to 50 of 1,026</div>
+      <div class="pagination-actions">
+        <button class="btn" id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button class="btn" id="nextBtn" onclick="changePage(1)">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Batch Toolbar -->
+  <div class="batch-bar" id="batchBar">
+    <div class="batch-count" id="batchCount">0 selected</div>
+    <button class="batch-btn" onclick="batchApplyOrg('Madhabdev University (MDU)')">+ MDU</button>
+    <button class="batch-btn" onclick="batchApplyOrg('Tyagbir Hem Baruah College (THB)')">+ THB</button>
+    <button class="batch-btn" onclick="batchApplyTitle('Student')">+ Student</button>
+    <button class="batch-btn" onclick="batchApplyTitle('Sinaki')">+ Sinaki</button>
+    <button class="batch-btn" onclick="batchApplyLoc('Rangachakua', 'Sonitpur')">+ Rangachakua</button>
+    <button class="batch-btn" onclick="batchApplyLoc('Jamugurihat', 'Sonitpur')">+ Jamugurihat</button>
+    <button class="batch-btn" onclick="batchApplyLoc('Tezpur', 'Sonitpur')">+ Tezpur</button>
+    <button class="batch-btn batch-btn-danger" onclick="batchDelete()">Delete</button>
+    <button class="batch-btn" onclick="clearSelection()" style="background:transparent; border-color:#4b5563;">✕ Cancel</button>
+  </div>
+
+  <!-- Edit Contact Modal -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-nav">
+          <span class="modal-title" id="modalTitle" style="font-weight:600; font-size:16px;">Edit Contact</span>
+          <span class="modal-counter" id="modalCounter"></span>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn btn-sm" id="btnModalPrev" onclick="navigateModal(-1)" title="Previous Contact (Alt+Left)">← Prev</button>
+          <button class="btn btn-sm" id="btnModalNext" onclick="navigateModal(1)" title="Next Contact (Alt+Right)">Next →</button>
+          <button class="btn btn-sm" style="padding:4px 8px; margin-left:8px;" onclick="closeModal()">✕</button>
+        </div>
+      </div>
+      
+      <div class="modal-body">
+        
+        <!-- ⚡ 1-Click Super Presets -->
+        <div class="combos-box">
+          <div class="combos-title">
+            <span>⚡ 1-Click Speed Presets</span>
+            <button class="btn btn-sm" style="padding:1px 6px; font-size:11px;" onclick="autoDetectFromName()" title="Detect Organization or Role from Contact Name">Detect from Name</button>
+          </div>
+          <div class="chip-container">
+            <span class="combo-chip" onclick="applyCombo('Madhabdev University (MDU)', 'Student')">🎓 MDU Student</span>
+            <span class="combo-chip" onclick="applyCombo('Tyagbir Hem Baruah College (THB)', 'Student')">🎓 THB Student</span>
+            <span class="combo-chip" onclick="applyCombo('Rajiv Gandhi University (RGU)', 'Student')">🎓 RGU Student</span>
+            <span class="combo-chip" onclick="applyCombo('Darrang College (DGCD)', 'Student')">🎓 Darrang Student</span>
+            <span class="combo-chip" onclick="applyCombo('Tyagbir Hem Baruah College (THB)', 'Batch-Mate')">👥 THB Batch-Mate</span>
+            <span class="combo-chip" onclick="applyCombo('Madhabdev University (MDU)', 'Colleague')">👥 MDU Colleague</span>
+            <span class="combo-chip" onclick="applyLocCombo('', 'Rangachakua', 'Sonitpur', 'Assam')">📍 Rangachakua, Sonitpur</span>
+            <span class="combo-chip" onclick="applyLocCombo('', 'Jamugurihat', 'Sonitpur', 'Assam')">📍 Jamugurihat, Sonitpur</span>
+            <span class="combo-chip" onclick="applyLocCombo('', 'Tezpur', 'Sonitpur', 'Assam')">📍 Tezpur, Sonitpur</span>
+            <span class="combo-chip" onclick="applyLocCombo('', 'Gohpur', 'Biswanath', 'Assam')">📍 Gohpur, Biswanath</span>
+            <span class="combo-chip" onclick="applyLocCombo('', 'Guwahati', 'Kamrup Metro', 'Assam')">📍 Guwahati</span>
+            <span class="combo-chip" onclick="applyFullPreset('', 'Sinaki', '', 'Rangachakua', 'Sonitpur')">🤝 Sinaki (Rangachakua)</span>
+            <span class="combo-chip" onclick="applyFullPreset('', 'Sinaki', '', 'Jamugurihat', 'Sonitpur')">🤝 Sinaki (Jamugurihat)</span>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">First Name</label>
+            <input type="text" id="inpFirstName" class="field-input">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Last Name</label>
+            <input type="text" id="inpLastName" class="field-input">
+          </div>
+        </div>
+
+        <!-- Organization -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <label class="field-label">Company / University / Office</label>
+            <span style="font-size:11px; color:#6b7280; cursor:pointer;" onclick="clearField('inpCompany')">Clear</span>
+          </div>
+          <input type="text" id="inpCompany" class="field-input" placeholder="e.g. Madhabdev University (MDU)">
+          <div class="chip-container" id="orgChips"></div>
+        </div>
+
+        <!-- Job Title / Role -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <label class="field-label">Role / Title / Relationship</label>
+            <span style="font-size:11px; color:#6b7280; cursor:pointer;" onclick="clearField('inpTitle')">Clear</span>
+          </div>
+          <input type="text" id="inpTitle" class="field-input" placeholder="e.g. Student, Colleague, Teacher">
+          <div class="chip-container" id="titleChips"></div>
+        </div>
+
+        <!-- Location Fields -->
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label">Village / Street</label>
+              <span style="font-size:11px; color:#6b7280; cursor:pointer;" onclick="clearField('inpStreet')">Clear</span>
+            </div>
+            <input type="text" id="inpStreet" class="field-input" placeholder="e.g. Agripam, 2 No. Batamari">
+            <div class="chip-container" id="streetChips"></div>
+          </div>
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label">City / Town</label>
+              <span style="font-size:11px; color:#6b7280; cursor:pointer;" onclick="clearField('inpCity')">Clear</span>
+            </div>
+            <input type="text" id="inpCity" class="field-input" placeholder="e.g. Rangachakua, Tezpur">
+            <div class="chip-container" id="cityChips"></div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label">District / Region</label>
+              <span style="font-size:11px; color:#6b7280; cursor:pointer;" onclick="clearField('inpRegion')">Clear</span>
+            </div>
+            <input type="text" id="inpRegion" class="field-input" placeholder="e.g. Sonitpur, Assam">
+            <div class="chip-container" id="regionChips"></div>
+          </div>
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label">Country</label>
+            </div>
+            <input type="text" id="inpCountry" class="field-input" placeholder="India">
+            <div class="chip-container" id="countryChips"></div>
+          </div>
+        </div>
+
+        <!-- Phones & Email -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Primary Phone</label>
+            <input type="text" id="inpPhone1" class="field-input">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Secondary Phone</label>
+            <input type="text" id="inpPhone2" class="field-input">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Email</label>
+          <input type="email" id="inpEmail" class="field-input">
+        </div>
+
+        <!-- Notes -->
+        <div class="field-group">
+          <label class="field-label">Notes</label>
+          <textarea id="inpNotes" class="field-input" rows="2"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="delBtn" onclick="deleteContact()">Delete Contact</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveContact(false)">Save (Ctrl+S)</button>
+          <button class="btn btn-success" id="btnSaveNext" onclick="saveContact(true)">Save & Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+  <script>
+    const HEADERS = ["First Name", "Middle Name", "Last Name", "Phonetic First Name", "Phonetic Middle Name", "Phonetic Last Name", "Name Prefix", "Name Suffix", "Nickname", "File As", "Organization Name", "Organization Title", "Organization Department", "Birthday", "Notes", "Photo", "Labels", "E-mail 1 - Label", "E-mail 1 - Value", "E-mail 2 - Label", "E-mail 2 - Value", "Phone 1 - Label", "Phone 1 - Value", "Phone 2 - Label", "Phone 2 - Value", "Address 1 - Label", "Address 1 - Formatted", "Address 1 - Street", "Address 1 - City", "Address 1 - PO Box", "Address 1 - Region", "Address 1 - Postal Code", "Address 1 - Country", "Address 1 - Extended Address", "Relation 1 - Label", "Relation 1 - Value", "Website 1 - Label", "Website 1 - Value", "Custom Field 1 - Label", "Custom Field 1 - Value"];
+
+    let contacts = /*CONTACTS_DATA*/[];
+    let filtered = [...contacts];
+    let selectedIndices = new Set();
+    let selectedCategories = new Set();
+    let searchQuery = '';
+    let page = 1;
+    const PAGE_SIZE = 50;
+    let editIndex = -1;
+    let serverAvailable = false;
+
+    // Preset Button Values
+    const PRESET_ORGS = [
+      { label: "MDU", val: "Madhabdev University (MDU)" },
+      { label: "THB College", val: "Tyagbir Hem Baruah College (THB)" },
+      { label: "RGU", val: "Rajiv Gandhi University (RGU)" },
+      { label: "Darrang College", val: "Darrang College (DGCD)" },
+      { label: "Gauhati Univ", val: "Gauhati University (GU)" },
+      { label: "Tezpur Univ", val: "Tezpur University (TU)" },
+      { label: "Dibrugarh Univ", val: "Dibrugarh University (DU)" },
+      { label: "RHSS", val: "RHSS" },
+      { label: "DAS", val: "DAS" },
+      { label: "Canara Bank", val: "Canara Bank" },
+      { label: "SBI", val: "SBI" },
+      { label: "Reliance Jio", val: "Reliance Jio" },
+      { label: "Bharti Airtel", val: "Bharti Airtel" },
+      { label: "Tocklai", val: "Tocklai Tea Research Institute" },
+      { label: "SDC Office", val: "SDC Office" },
+      { label: "PWD", val: "PWD" },
+      { label: "Facebook", val: "Facebook" }
+    ];
+
+    const PRESET_TITLES = [
+      "Student", "Class-Mate", "Batch-Mate", "Colleague", "Senior", "Junior",
+      "Sinaki", "Relative", "Teacher", "Professor", "PhD Scholar",
+      "Doctor", "Driver", "Owner", "President", "Director", "Officer", "Neighbour"
+    ];
+
+    const PRESET_STREETS = [
+      "Agripam", "Morisuti", "Itakhola", "2 No. Batamari", "Dekasundar",
+      "Kusumtula", "Diplunga", "Santipur", "Beltola", "Bamunorbari", "Patgau"
+    ];
+
+    const PRESET_CITIES = [
+      "Rangachakua", "Jamugurihat", "Tezpur", "Guwahati", "Gohpur", "Sootea",
+      "Narayanpur", "Bihpuria", "Lakhimpur", "Dhemaji", "Jorhat", "Dibrugarh", "Nagaon", "Ziro"
+    ];
+
+    const PRESET_REGIONS = [
+      "Sonitpur", "Biswanath", "Lakhimpur", "Dhemaji", "Jorhat",
+      "Kamrup Metro", "Nagaon", "Dibrugarh", "Majuli", "Arunachal Pradesh"
+    ];
+
+    const PRESET_COUNTRIES = ["India", "United States", "Australia"];
+
+    // Initialize Chip Palettes
+    function initChips() {
+      renderChips('orgChips', PRESET_ORGS, 'inpCompany', true);
+      renderChips('titleChips', PRESET_TITLES, 'inpTitle', true);
+      renderChips('streetChips', PRESET_STREETS, 'inpStreet', false);
+      renderChips('cityChips', PRESET_CITIES, 'inpCity', false);
+      renderChips('regionChips', PRESET_REGIONS, 'inpRegion', false);
+      renderChips('countryChips', PRESET_COUNTRIES, 'inpCountry', false);
+    }
+
+    function renderChips(containerId, list, inputId, isMulti = false) {
+      const c = document.getElementById(containerId);
+      if (!c) return;
+      c.innerHTML = '';
+      list.forEach(item => {
+        const label = typeof item === 'object' ? item.label : item;
+        const val = typeof item === 'object' ? item.val : item;
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.innerText = label;
+        chip.setAttribute('data-val', val);
+        chip.onclick = () => {
+          if (isMulti) {
+            toggleMultiFieldValue(inputId, val);
+          } else {
+            setFieldValue(inputId, val);
+          }
+        };
+        c.appendChild(chip);
+      });
+    }
+
+    function toggleMultiFieldValue(inputId, val) {
+      const el = document.getElementById(inputId);
+      let currentVal = el.value.trim();
+      // Split by comma or semicolon
+      let items = currentVal ? currentVal.split(/[,;]+/).map(s => s.trim()).filter(Boolean) : [];
+      
+      const existingIdx = items.findIndex(item => item.toLowerCase() === val.toLowerCase());
+      if (existingIdx !== -1) {
+        items.splice(existingIdx, 1);
+      } else {
+        items.push(val);
+      }
+      el.value = items.join(', ');
+      updateChipHighlights();
+    }
+
+    function setFieldValue(inputId, val) {
+      const el = document.getElementById(inputId);
+      if (el.value.trim().toLowerCase() === val.toLowerCase()) {
+        el.value = '';
+      } else {
+        el.value = val;
+      }
+      el.focus();
+      updateChipHighlights();
+    }
+
+    function clearField(inputId) {
+      const el = document.getElementById(inputId);
+      el.value = '';
+      el.focus();
+      updateChipHighlights();
+    }
+
+    function updateChipHighlights() {
+      const checkGroup = (containerId, inputId, isMulti = false) => {
+        const val = (document.getElementById(inputId).value || '').trim().toLowerCase();
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        let activeTokens = val ? val.split(/[,;]+/).map(s => s.trim().toLowerCase()).filter(Boolean) : [];
+        
+        Array.from(container.children).forEach(chip => {
+          const dVal = (chip.getAttribute('data-val') || chip.innerText).trim().toLowerCase();
+          let isMatch = false;
+          if (activeTokens.length > 0) {
+            isMatch = activeTokens.some(tok => tok === dVal || tok.includes(dVal) || dVal.includes(tok));
+          }
+          chip.classList.toggle('active', !!isMatch);
+        });
+      };
+      checkGroup('orgChips', 'inpCompany', true);
+      checkGroup('titleChips', 'inpTitle', true);
+      checkGroup('streetChips', 'inpStreet', false);
+      checkGroup('cityChips', 'inpCity', false);
+      checkGroup('regionChips', 'inpRegion', false);
+      checkGroup('countryChips', 'inpCountry', false);
+    }
+
+    // Multi-Select Category Filters
+    function toggleCategory(cat) {
+      if (selectedCategories.has(cat)) {
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      updateFilterChipUI();
+      page = 1;
+      render();
+    }
+
+    function clearAllFilters() {
+      selectedCategories.clear();
+      updateFilterChipUI();
+      page = 1;
+      render();
+    }
+
+    function updateFilterChipUI() {
+      document.querySelectorAll('.filter-chip').forEach(el => {
+        const cat = el.getAttribute('data-cat');
+        el.classList.toggle('active', selectedCategories.has(cat));
+      });
+      document.getElementById('clearFiltersBtn').style.display = selectedCategories.size > 0 ? 'inline-block' : 'none';
+    }
+
+    // Combos
+    function applyCombo(org, title) {
+      if (org) document.getElementById('inpCompany').value = org;
+      if (title) document.getElementById('inpTitle').value = title;
+      updateChipHighlights();
+      showToast(`Applied: ${title || org}`);
+    }
+
+    function applyLocCombo(street, city, region, country = 'India') {
+      if (street) document.getElementById('inpStreet').value = street;
+      if (city) document.getElementById('inpCity').value = city;
+      if (region) document.getElementById('inpRegion').value = region;
+      if (country) document.getElementById('inpCountry').value = country;
+      updateChipHighlights();
+      showToast(`Applied: ${city || region}`);
+    }
+
+    function applyFullPreset(org, title, street, city, region) {
+      if (org) document.getElementById('inpCompany').value = org;
+      if (title) document.getElementById('inpTitle').value = title;
+      if (street) document.getElementById('inpStreet').value = street;
+      if (city) document.getElementById('inpCity').value = city;
+      if (region) document.getElementById('inpRegion').value = region;
+      document.getElementById('inpCountry').value = 'India';
+      updateChipHighlights();
+      showToast('Preset applied');
+    }
+
+    function autoDetectFromName() {
+      const fn = document.getElementById('inpFirstName').value;
+      const ln = document.getElementById('inpLastName').value;
+      const full = `${fn} ${ln}`;
+
+      let detectedOrg = '';
+      let detectedTitle = '';
+
+      if (/\b(MDU|Madhabdev|SSVV)\b/i.test(full)) detectedOrg = 'Madhabdev University (MDU)';
+      else if (/\b(THB|Tyagbir)\b/i.test(full)) detectedOrg = 'Tyagbir Hem Baruah College (THB)';
+      else if (/\b(RGU|Rajiv Gandhi)\b/i.test(full)) detectedOrg = 'Rajiv Gandhi University (RGU)';
+      else if (/\b(Darrang)\b/i.test(full)) detectedOrg = 'Darrang College (DGCD)';
+      else if (/\b(Jio)\b/i.test(full)) detectedOrg = 'Reliance Jio';
+      else if (/\b(Airtel)\b/i.test(full)) detectedOrg = 'Bharti Airtel';
+      else if (/\b(SBI)\b/i.test(full)) detectedOrg = 'SBI';
+      else if (/\b(Canara)\b/i.test(full)) detectedOrg = 'Canara Bank';
+
+      if (/\b(Student)\b/i.test(full)) detectedTitle = 'Student';
+      else if (/\b(Driver)\b/i.test(full)) detectedTitle = 'Driver';
+      else if (/\b(Prof|Professor|Dr\.?)\b/i.test(full)) detectedTitle = 'Professor';
+      else if (/\b(Sir|Madam|Teacher)\b/i.test(full)) detectedTitle = 'Teacher';
+      else if (/\b(Colleague)\b/i.test(full)) detectedTitle = 'Colleague';
+
+      if (detectedOrg) document.getElementById('inpCompany').value = detectedOrg;
+      if (detectedTitle) document.getElementById('inpTitle').value = detectedTitle;
+
+      if (detectedOrg || detectedTitle) {
+        updateChipHighlights();
+        showToast(`Detected: ${detectedOrg} ${detectedTitle}`.trim());
+      } else {
+        showToast('No keywords detected in name');
+      }
+    }
+
+    // Render Table
+    function render() {
+      const q = searchQuery.toLowerCase().trim();
+
+      filtered = contacts.filter(c => {
+        // Multi-category filtering
+        if (selectedCategories.size > 0) {
+          for (const cat of selectedCategories) {
+            const org = (c['Organization Name'] || '').toLowerCase();
+            const title = (c['Organization Title'] || '').toLowerCase();
+            const city = (c['Address 1 - City'] || '').toLowerCase();
+            const street = (c['Address 1 - Street'] || '').toLowerCase();
+            const formatted = (c['Address 1 - Formatted'] || '').toLowerCase();
+            const phone = (c['Phone 1 - Value'] || '').trim();
+            const email = (c['E-mail 1 - Value'] || '').trim();
+
+            if (cat === 'company' && !org.trim()) return false;
+            if (cat === 'nocompany' && org.trim()) return false;
+            if (cat === 'location' && !(city || street || formatted)) return false;
+            if (cat === 'nolocation' && (city || street || formatted)) return false;
+            if (cat === 'phone' && !phone) return false;
+            if (cat === 'email' && !email) return false;
+
+            // Specific orgs
+            if (cat === 'org:mdu' && !org.includes('mdu') && !org.includes('madhabdev')) return false;
+            if (cat === 'org:thb' && !org.includes('thb') && !org.includes('baruah')) return false;
+            if (cat === 'org:rgu' && !org.includes('rgu') && !org.includes('rajiv gandhi')) return false;
+            if (cat === 'org:darrang' && !org.includes('darrang')) return false;
+            if (cat === 'org:jio' && !org.includes('jio')) return false;
+            if (cat === 'org:airtel' && !org.includes('airtel')) return false;
+            if (cat === 'org:bank' && !org.includes('sbi') && !org.includes('canara') && !org.includes('bank')) return false;
+
+            // Specific roles
+            if (cat === 'role:student' && !title.includes('student')) return false;
+            if (cat === 'role:classmate' && !title.includes('mate')) return false;
+            if (cat === 'role:colleague' && !title.includes('colleague')) return false;
+            if (cat === 'role:sinaki' && !title.includes('sinaki')) return false;
+            if (cat === 'role:relative' && !title.includes('relative')) return false;
+            if (cat === 'role:teacher' && !title.includes('teacher') && !title.includes('prof') && !title.includes('scholar')) return false;
+
+            // Specific locations
+            if (cat === 'loc:rangachakua' && !city.includes('rangachakua') && !street.includes('rangachakua') && !formatted.includes('rangachakua')) return false;
+            if (cat === 'loc:jamugurihat' && !city.includes('jamugurihat') && !street.includes('jamugurihat') && !formatted.includes('jamugurihat')) return false;
+            if (cat === 'loc:tezpur' && !city.includes('tezpur') && !street.includes('tezpur') && !formatted.includes('tezpur')) return false;
+            if (cat === 'loc:guwahati' && !city.includes('guwahati') && !formatted.includes('guwahati')) return false;
+            if (cat === 'loc:gohpur' && !city.includes('gohpur') && !formatted.includes('gohpur')) return false;
+          }
+        }
+
+        if (q) {
+          const str = [
+            c['First Name'], c['Middle Name'], c['Last Name'],
+            c['Organization Name'], c['Organization Title'],
+            c['Address 1 - Street'], c['Address 1 - City'], c['Address 1 - Region'],
+            c['Phone 1 - Value'], c['Phone 2 - Value'],
+            c['Notes']
+          ].join(' ').toLowerCase();
+          if (!str.includes(q)) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('contactCount').innerText = `${contacts.length.toLocaleString()} contacts`;
+
+      const total = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (page > totalPages) page = totalPages;
+      const start = (page - 1) * PAGE_SIZE;
+      const end = Math.min(start + PAGE_SIZE, total);
+      const items = filtered.slice(start, end);
+
+      const tbody = document.getElementById('tableBody');
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 48px; color:#9ca3af;">No contacts match your selected categories/search.</td></tr>';
+      } else {
+        tbody.innerHTML = items.map((c) => {
+          const realIdx = contacts.indexOf(c);
+          const isSelected = selectedIndices.has(realIdx);
+          const name = [c['First Name'], c['Middle Name'], c['Last Name']].filter(Boolean).join(' ') || 'Unnamed';
+          const org = c['Organization Name'] || '';
+          const title = c['Organization Title'] || '';
+          const locParts = [c['Address 1 - Street'], c['Address 1 - City'], c['Address 1 - Region']].filter(Boolean);
+          const loc = locParts.length > 0 ? locParts.join(', ') : (c['Address 1 - Formatted'] || '');
+          const phone = c['Phone 1 - Value'] || '';
+
+          return `
+            <tr class="${isSelected ? 'selected' : ''}">
+              <td style="text-align: center;" onclick="event.stopPropagation()">
+                <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelect(${realIdx}, this.checked)">
+              </td>
+              <td class="name-cell" onclick="openEditModal(${realIdx})">
+                ${name}
+              </td>
+              <td onclick="openEditModal(${realIdx})">
+                ${org ? org : '<span class="empty-val">—</span>'}
+                ${title ? `<br><span class="role-badge">${title}</span>` : ''}
+              </td>
+              <td onclick="openEditModal(${realIdx})">${loc ? loc : '<span class="empty-val">—</span>'}</td>
+              <td onclick="openEditModal(${realIdx})">${phone ? phone : '<span class="empty-val">—</span>'}</td>
+              <td style="text-align: right;">
+                <button class="btn btn-sm" onclick="openEditModal(${realIdx})">Edit</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('pageInfo').innerText = total > 0 ? `Showing ${start + 1} to ${end} of ${total.toLocaleString()}` : '0 of 0';
+      document.getElementById('prevBtn').disabled = page <= 1;
+      document.getElementById('nextBtn').disabled = page >= totalPages;
+
+      updateBatchBar();
+    }
+
+    // Selection & Batch Operations
+    function toggleSelect(idx, checked) {
+      if (checked) selectedIndices.add(idx);
+      else selectedIndices.delete(idx);
+      render();
+    }
+
+    function toggleSelectAll(masterCb) {
+      const start = (page - 1) * PAGE_SIZE;
+      const end = Math.min(start + PAGE_SIZE, filtered.length);
+      const items = filtered.slice(start, end);
+
+      items.forEach(c => {
+        const realIdx = contacts.indexOf(c);
+        if (masterCb.checked) selectedIndices.add(realIdx);
+        else selectedIndices.delete(realIdx);
+      });
+      render();
+    }
+
+    function clearSelection() {
+      selectedIndices.clear();
+      document.getElementById('selectAll').checked = false;
+      render();
+    }
+
+    function updateBatchBar() {
+      const bar = document.getElementById('batchBar');
+      const countEl = document.getElementById('batchCount');
+      if (selectedIndices.size > 0) {
+        countEl.innerText = `${selectedIndices.size} selected`;
+        bar.classList.add('show');
+      } else {
+        bar.classList.remove('show');
+      }
+    }
+
+    function batchApplyOrg(orgName) {
+      selectedIndices.forEach(idx => {
+        if (contacts[idx]) contacts[idx]['Organization Name'] = orgName;
+      });
+      autoSaveToCsv();
+      showToast(`Updated ${selectedIndices.size} contacts with ${orgName}`);
+      render();
+    }
+
+    function batchApplyTitle(title) {
+      selectedIndices.forEach(idx => {
+        if (contacts[idx]) contacts[idx]['Organization Title'] = title;
+      });
+      autoSaveToCsv();
+      showToast(`Updated ${selectedIndices.size} contacts with ${title}`);
+      render();
+    }
+
+    function batchApplyLoc(city, region, country = 'India') {
+      selectedIndices.forEach(idx => {
+        if (contacts[idx]) {
+          contacts[idx]['Address 1 - City'] = city;
+          contacts[idx]['Address 1 - Region'] = region;
+          contacts[idx]['Address 1 - Country'] = country;
+          const parts = [contacts[idx]['Address 1 - Street'], city, region, country].filter(Boolean);
+          contacts[idx]['Address 1 - Formatted'] = parts.join(', ');
+          if (!contacts[idx]['Address 1 - Label']) contacts[idx]['Address 1 - Label'] = 'Home';
+        }
+      });
+      autoSaveToCsv();
+      showToast(`Updated ${selectedIndices.size} contacts with ${city}, ${region}`);
+      render();
+    }
+
+    function batchDelete() {
+      if (confirm(`Are you sure you want to delete ${selectedIndices.size} contacts?`)) {
+        const toDelete = Array.from(selectedIndices).sort((a, b) => b - a);
+        toDelete.forEach(idx => {
+          contacts.splice(idx, 1);
+        });
+        selectedIndices.clear();
+        document.getElementById('selectAll').checked = false;
+        autoSaveToCsv();
+        render();
+        showToast('Deleted selected contacts');
+      }
+    }
+
+    // Search
+    function onSearch() {
+      searchQuery = document.getElementById('searchInput').value;
+      page = 1;
+      render();
+    }
+
+    function changePage(delta) {
+      page += delta;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Modal Operations
+    function openEditModal(idx) {
+      editIndex = idx;
+      const c = contacts[idx];
+      document.getElementById('modalTitle').innerText = 'Edit Contact';
+      document.getElementById('modalCounter').innerText = `(${idx + 1} of ${contacts.length})`;
+      document.getElementById('delBtn').style.display = 'block';
+
+      document.getElementById('inpFirstName').value = c['First Name'] || '';
+      document.getElementById('inpLastName').value = c['Last Name'] || '';
+      document.getElementById('inpCompany').value = c['Organization Name'] || '';
+      document.getElementById('inpTitle').value = c['Organization Title'] || '';
+      document.getElementById('inpStreet').value = c['Address 1 - Street'] || '';
+      document.getElementById('inpCity').value = c['Address 1 - City'] || '';
+      document.getElementById('inpRegion').value = c['Address 1 - Region'] || '';
+      document.getElementById('inpCountry').value = c['Address 1 - Country'] || 'India';
+      document.getElementById('inpPhone1').value = c['Phone 1 - Value'] || '';
+      document.getElementById('inpPhone2').value = c['Phone 2 - Value'] || '';
+      document.getElementById('inpEmail').value = c['E-mail 1 - Value'] || '';
+      document.getElementById('inpNotes').value = c['Notes'] || '';
+
+      document.getElementById('btnModalPrev').disabled = (editIndex <= 0);
+      document.getElementById('btnModalNext').disabled = (editIndex >= contacts.length - 1);
+      document.getElementById('btnSaveNext').style.display = (editIndex < contacts.length - 1) ? 'inline-flex' : 'none';
+
+      updateChipHighlights();
+      document.getElementById('contactModal').classList.add('open');
+    }
+
+    function openNewModal() {
+      editIndex = -1;
+      document.getElementById('modalTitle').innerText = 'New Contact';
+      document.getElementById('modalCounter').innerText = '';
+      document.getElementById('delBtn').style.display = 'none';
+      document.getElementById('btnModalPrev').disabled = true;
+      document.getElementById('btnModalNext').disabled = true;
+      document.getElementById('btnSaveNext').style.display = 'none';
+
+      ['inpFirstName', 'inpLastName', 'inpCompany', 'inpTitle', 'inpStreet', 'inpCity', 'inpRegion', 'inpPhone1', 'inpPhone2', 'inpEmail', 'inpNotes'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('inpCountry').value = 'India';
+
+      updateChipHighlights();
+      document.getElementById('contactModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('contactModal').classList.remove('open');
+      editIndex = -1;
+    }
+
+    function navigateModal(delta) {
+      const newIdx = editIndex + delta;
+      if (newIdx >= 0 && newIdx < contacts.length) {
+        openEditModal(newIdx);
+      }
+    }
+
+    function saveContact(goToNext = false) {
+      const c = editIndex >= 0 ? contacts[editIndex] : {};
+
+      c['First Name'] = document.getElementById('inpFirstName').value.trim();
+      c['Last Name'] = document.getElementById('inpLastName').value.trim();
+      c['Organization Name'] = document.getElementById('inpCompany').value.trim();
+      c['Organization Title'] = document.getElementById('inpTitle').value.trim();
+      c['Address 1 - Street'] = document.getElementById('inpStreet').value.trim();
+      c['Address 1 - City'] = document.getElementById('inpCity').value.trim();
+      c['Address 1 - Region'] = document.getElementById('inpRegion').value.trim();
+      c['Address 1 - Country'] = document.getElementById('inpCountry').value.trim();
+
+      const addrParts = [c['Address 1 - Street'], c['Address 1 - City'], c['Address 1 - Region'], c['Address 1 - Country']].filter(Boolean);
+      c['Address 1 - Formatted'] = addrParts.join(', ');
+      if (addrParts.length > 0 && !c['Address 1 - Label']) c['Address 1 - Label'] = 'Home';
+
+      c['Phone 1 - Value'] = document.getElementById('inpPhone1').value.trim();
+      if (c['Phone 1 - Value'] && !c['Phone 1 - Label']) c['Phone 1 - Label'] = 'Mobile';
+
+      c['Phone 2 - Value'] = document.getElementById('inpPhone2').value.trim();
+      if (c['Phone 2 - Value'] && !c['Phone 2 - Label']) c['Phone 2 - Label'] = 'Mobile';
+
+      c['E-mail 1 - Value'] = document.getElementById('inpEmail').value.trim();
+      if (c['E-mail 1 - Value'] && !c['E-mail 1 - Label']) c['E-mail 1 - Label'] = '* Home';
+
+      c['Notes'] = document.getElementById('inpNotes').value.trim();
+
+      HEADERS.forEach(h => {
+        if (!(h in c)) c[h] = '';
+      });
+
+      if (editIndex === -1) {
+        contacts.unshift(c);
+        editIndex = 0;
+      }
+
+      autoSaveToCsv();
+      render();
+      showToast('Contact saved & synced');
+
+      if (goToNext && editIndex < contacts.length - 1) {
+        openEditModal(editIndex + 1);
+      } else if (!goToNext) {
+        closeModal();
+      }
+    }
+
+    function deleteContact() {
+      if (editIndex >= 0 && confirm('Delete this contact?')) {
+        contacts.splice(editIndex, 1);
+        selectedIndices.delete(editIndex);
+        autoSaveToCsv();
+        closeModal();
+        render();
+        showToast('Contact deleted & synced');
+      }
+    }
+
+    // Auto-save to CSV endpoint
+    function autoSaveToCsv() {
+      fetch('/api/save_csv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contacts: contacts })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          setSyncStatus(true, `Auto-saved to CSV (${contacts.length})`);
+        } else {
+          setSyncStatus(false, 'Auto-save failed');
+        }
+      })
+      .catch(() => {
+        setSyncStatus(false, 'Auto-save ready on http://localhost:8000');
+      });
+    }
+
+    function checkServerStatus() {
+      fetch('/api/save_csv', { method: 'OPTIONS' })
+      .then(() => {
+        serverAvailable = true;
+        setSyncStatus(true, 'Auto-save Active');
+      })
+      .catch(() => {
+        serverAvailable = false;
+        setSyncStatus(false, 'Run server for instant auto-save');
+      });
+    }
+
+    function setSyncStatus(online, text) {
+      const el = document.getElementById('syncStatus');
+      const textEl = document.getElementById('syncText');
+      el.className = 'sync-status ' + (online ? 'online' : 'offline');
+      textEl.innerText = text;
+    }
+
+    // Export / Download CSV manually
+    function exportCsv() {
+      function esc(v) {
+        if (!v) return '';
+        const s = String(v);
+        if (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r')) {
+          return '"' + s.replace(/"/g, '""') + '"';
+        }
+        return s;
+      }
+
+      const lines = [HEADERS.map(esc).join(',')];
+      contacts.forEach(c => {
+        lines.push(HEADERS.map(h => esc(c[h] || '')).join(','));
+      });
+
+      const content = '\uFEFF' + lines.join('\r\n');
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'contacts.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Exported contacts.csv (Google Contacts compatible)');
+    }
+
+    // Open CSV File
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        let text = evt.target.result;
+        if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+
+        const rows = [];
+        let row = [];
+        let inQuotes = false;
+        let cur = '';
+
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          const next = text[i + 1];
+          if (ch === '"') {
+            if (inQuotes && next === '"') { cur += '"'; i++; }
+            else { inQuotes = !inQuotes; }
+          } else if (ch === ',' && !inQuotes) {
+            row.push(cur); cur = '';
+          } else if ((ch === '\r' || ch === '\n') && !inQuotes) {
+            if (ch === '\r' && next === '\n') i++;
+            row.push(cur);
+            if (row.length > 1 || row[0].trim()) rows.push(row);
+            row = []; cur = '';
+          } else {
+            cur += ch;
+          }
+        }
+        if (cur || row.length > 0) { row.push(cur); rows.push(row); }
+
+        if (rows.length < 2) return;
+        const headers = rows[0];
+        const loaded = [];
+        for (let i = 1; i < rows.length; i++) {
+          const r = rows[i];
+          const obj = {};
+          HEADERS.forEach(gh => {
+            const idx = headers.indexOf(gh);
+            obj[gh] = idx !== -1 && idx < r.length ? r[idx].trim() : '';
+          });
+          loaded.push(obj);
+        }
+
+        contacts = loaded;
+        page = 1;
+        selectedIndices.clear();
+        autoSaveToCsv();
+        render();
+        showToast(`Loaded ${contacts.length} contacts`);
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      const isModalOpen = document.getElementById('contactModal').classList.contains('open');
+      if (!isModalOpen) return;
+
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        saveContact(true);
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveContact(false);
+      } else if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.altKey && e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateModal(1);
+      } else if (e.altKey && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateModal(-1);
+      }
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    // Init
+    initChips();
+    render();
+    checkServerStatus();
+  </script>
+</body>
+</html>
