@@ -684,6 +684,12 @@
       display: none;
     }
   </style>
+
+  <!-- Visualization Libraries: Chart.js, Leaflet, Vis-Network -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
 
@@ -699,6 +705,11 @@
         </span>
       </div>
       <div class="header-actions">
+        <!-- Main View Switcher Tabs -->
+        <div style="display: flex; gap: 4px; background: #f3f4f6; padding: 3px; border-radius: 8px; border: 1px solid #e5e7eb; margin-right: 8px;">
+          <button class="btn" id="tabBtnContacts" onclick="switchMainTab('contacts')" style="background: #111827; color: #ffffff; border: none; font-weight: 600; padding: 6px 12px; border-radius: 6px;">📋 Contacts</button>
+          <button class="btn" id="tabBtnVisualizations" onclick="switchMainTab('visualizations')" style="background: transparent; color: #374151; border: none; font-weight: 600; padding: 6px 12px; border-radius: 6px;">📊 Visualizations <span style="background: #ef4444; color: white; font-size: 10px; padding: 1px 6px; border-radius: 9999px; margin-left: 3px;">9 New</span></button>
+        </div>
         <input type="file" id="fileInput" class="hidden-file" accept=".csv">
         <button class="btn" onclick="document.getElementById('fileInput').click()">Open CSV</button>
         <button class="btn" onclick="openNewModal()">+ New Contact</button>
@@ -706,6 +717,8 @@
       </div>
     </header>
 
+    <!-- Contacts View Section -->
+    <div id="contactsViewSection">
     <!-- Search & Multi-Select Category Filters -->
     <div class="filter-bar">
       <div class="search-row">
@@ -799,7 +812,185 @@
         <button class="btn" id="nextBtn" onclick="changePage(1)">Next</button>
       </div>
     </div>
-  </div>
+  </div> <!-- Close contactsViewSection -->
+
+  <!-- Visualizations & Analytics View Section -->
+  <div id="visualizationsViewSection" style="display: none; margin-top: 10px;">
+    <!-- Metric Badges Row -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px;">
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Total Contacts</div>
+        <div style="font-size: 24px; font-weight: 700; color: #111827; margin-top: 4px;">606</div>
+        <div style="font-size: 11px; color: #10b981; font-weight: 500;">5 Duplicates Merged</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Phone Coverage</div>
+        <div style="font-size: 24px; font-weight: 700; color: #2563eb; margin-top: 4px;">603 <span style="font-size: 12px; color: #9ca3af; font-weight: normal;">/ 606</span></div>
+        <div style="font-size: 11px; color: #3b82f6; font-weight: 500;">99.5% completion</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Address Enriched</div>
+        <div style="font-size: 24px; font-weight: 700; color: #4f46e5; margin-top: 4px;">513 <span style="font-size: 12px; color: #9ca3af; font-weight: normal;">/ 606</span></div>
+        <div style="font-size: 11px; color: #6366f1; font-weight: 500;">84.7% formatted</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">GIS Survey Corridor</div>
+        <div style="font-size: 24px; font-weight: 700; color: #e11d48; margin-top: 4px;">22 <span style="font-size: 12px; color: #9ca3af; font-weight: normal;">Houses</span></div>
+        <div style="font-size: 11px; color: #f43f5e; font-weight: 500;">1.28 km path</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">DAS Family Clan</div>
+        <div style="font-size: 24px; font-weight: 700; color: #d97706; margin-top: 4px;">23</div>
+        <div style="font-size: 11px; color: #f59e0b; font-weight: 500;">Genealogical tree</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Security Alert</div>
+        <div style="font-size: 24px; font-weight: 700; color: #dc2626; margin-top: 4px;">2</div>
+        <div style="font-size: 11px; color: #ef4444; font-weight: 500;">KYC cards (Row 14, 271)</div>
+      </div>
+    </div>
+
+    <!-- 1. Interactive Social Knowledge Graph -->
+    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #111827;">🕸️ Interactive Social & Institutional Knowledge Graph</h3>
+          <p style="font-size: 12px; color: #6b7280;">Physics simulation of central academic hubs, DAS clan, and village houses. Drag or zoom to explore connections.</p>
+        </div>
+        <div style="font-size: 11px; color: #4b5563; display: flex; gap: 10px;">
+          <span>🔵 Academia</span>
+          <span>🟠 DAS Clan</span>
+          <span>🟢 Village</span>
+          <span>🔴 VIPs / Titans</span>
+        </div>
+      </div>
+      <div id="indexNetworkGraph" style="height: 460px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;"></div>
+    </div>
+
+    <!-- 2. GIS Map & Spatial Survey Section -->
+    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #111827;">📍 Micro-Spatial GIS Map: "House 1" to "House 28"</h3>
+          <p style="font-size: 12px; color: #6b7280;">100% Free Public Esri Basemaps (Zero API key required). Live coordinates from Google Maps shortlinks in Notes.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button id="btnIndexLiveMap" onclick="switchIndexMapView('live')" style="padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; background: #2563eb; color: #ffffff; border: none; cursor: pointer;">🗺️ Live Map</button>
+          <button id="btnIndexStaticMap" onclick="switchIndexMapView('static')" style="padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; cursor: pointer;">📍 Route Survey Graphic</button>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+        <div>
+          <div id="indexMap" style="height: 400px; border-radius: 8px; border: 1px solid #e5e7eb;"></div>
+          <div id="indexStaticMapContainer" style="display: none; height: 400px; background: #f3f4f6; border-radius: 8px; border: 1px solid #e5e7eb; text-align: center; overflow: hidden;">
+            <img src="eda_06_gis_house_survey_map.png" alt="Route Survey" style="max-height: 100%; max-width: 100%; object-contain: contain;">
+          </div>
+        </div>
+        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h4 style="font-size: 12px; font-weight: 700; color: #374151; text-transform: uppercase; margin-bottom: 8px;">Survey Key Findings</h4>
+            <ul style="font-size: 12px; color: #4b5563; line-height: 1.6; padding-left: 14px;">
+              <li><strong>House 1 Disguise:</strong> Stored as <em>House Dibyar Khura 1</em>.</li>
+              <li><strong>House 27 Disguise:</strong> Stored as <em>Ranjan 27</em>.</li>
+              <li><strong>Exact Collision:</strong> <em>House 26</em> & <em>Ranjan 27</em> share identical coordinates.</li>
+              <li><strong>Total Corridor:</strong> 1,276.8 meters walk along Rangachakua village road.</li>
+            </ul>
+          </div>
+          <button onclick="zoomIndexAllHouses()" style="margin-top: 12px; padding: 8px; font-size: 12px; font-weight: 600; border-radius: 6px; background: #2563eb; color: #ffffff; border: none; cursor: pointer; width: 100%;">Fit All Houses</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Distance Profile & Life Spheres Radar -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">🚶 Survey Walk Distance Profile</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Cumulative meters computed via Haversine formula across consecutive houses</p>
+        <div style="height: 250px;">
+          <canvas id="indexDistanceChart"></canvas>
+        </div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">🎯 Multidimensional Life Spheres Profile</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Network breadth across 6 personal and academic domains</p>
+        <div style="height: 250px;">
+          <canvas id="indexRadarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 3B. Occupational Spectrum & Positions Hierarchy (NEW) -->
+    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #111827;">💼 Occupational Positions & Professional Hierarchy</h3>
+          <p style="font-size: 12px; color: #6b7280;">Distribution of functional job positions, professional titles, and educational seniority across your 606 contacts.</p>
+        </div>
+        <div style="font-size: 11px; font-weight: 600; color: #0284c7; background: #e0f2fe; padding: 4px 10px; border-radius: 9999px;">
+          10 Functional Sectors
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px;">
+        <div>
+          <h4 style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px;">Functional Occupational Sectors</h4>
+          <div style="height: 270px;">
+            <canvas id="indexPositionsChart"></canvas>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 8px;">Academic & Leadership Seniority Hierarchy</h4>
+          <div style="height: 270px;">
+            <canvas id="indexSeniorityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Core Analytical Charts: Orgs, Surnames, Districts -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 20px;">
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">Top Organizations & Hubs</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">MDU, THB, RGU, DGCD and DAS Clan</p>
+        <div style="height: 240px;">
+          <canvas id="indexOrgChart"></canvas>
+        </div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">Assamese Surnames Distribution</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Lineage representation across contacts</p>
+        <div style="height: 240px;">
+          <canvas id="indexSurnameChart"></canvas>
+        </div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">Geographic Epicenter (Districts)</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Sonitpur, Lakhimpur, Biswanath, Kamrup</p>
+        <div style="height: 240px;">
+          <canvas id="indexRegionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Roles & Telecom Charts -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">Social Roles & Relationship Types</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Student, Sinaki, Class-Mate, Relative, Professor</p>
+        <div style="height: 240px;">
+          <canvas id="indexRoleChart"></canvas>
+        </div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;">Telecom Infrastructure Series</h3>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 12px;">Modern 4G (75.4%) vs Legacy Airtel & BSNL 94xx</p>
+        <div style="height: 240px; display: flex; align-items: center; justify-content: center;">
+          <canvas id="indexTelecomChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div> <!-- Close visualizationsViewSection -->
+  </div> <!-- Close app -->
 
   <!-- Floating Batch Toolbar -->
   <div class="batch-bar" id="batchBar">
@@ -1687,6 +1878,328 @@
     initChips();
     render();
     checkServerStatus();
+  </script>
+
+  <script>
+    // Tab switching logic
+    let indexVizInitialized = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.location.hash === '#visualizations' || window.location.search.includes('view=visualizations')) {
+        switchMainTab('visualizations');
+      }
+    });
+
+    let indexMapInstance = null;
+    let indexMarkers = [];
+
+    function switchMainTab(tab) {
+      const cView = document.getElementById('contactsViewSection');
+      const vView = document.getElementById('visualizationsViewSection');
+      const btnC = document.getElementById('tabBtnContacts');
+      const btnV = document.getElementById('tabBtnVisualizations');
+
+      if (tab === 'contacts') {
+        cView.style.display = 'block';
+        vView.style.display = 'none';
+        btnC.style.background = '#111827';
+        btnC.style.color = '#ffffff';
+        btnV.style.background = 'transparent';
+        btnV.style.color = '#374151';
+      } else {
+        cView.style.display = 'none';
+        vView.style.display = 'block';
+        btnV.style.background = '#111827';
+        btnV.style.color = '#ffffff';
+        btnC.style.background = 'transparent';
+        btnC.style.color = '#374151';
+
+        if (!indexVizInitialized) {
+          initIndexVisualizations();
+          indexVizInitialized = true;
+        } else if (indexMapInstance) {
+          setTimeout(() => { indexMapInstance.invalidateSize(); }, 100);
+        }
+      }
+    }
+
+    function switchIndexMapView(mode) {
+      const mapEl = document.getElementById('indexMap');
+      const staticEl = document.getElementById('indexStaticMapContainer');
+      const btnLive = document.getElementById('btnIndexLiveMap');
+      const btnStatic = document.getElementById('btnIndexStaticMap');
+
+      if (mode === 'live') {
+        mapEl.style.display = 'block';
+        staticEl.style.display = 'none';
+        btnLive.style.background = '#2563eb';
+        btnLive.style.color = '#ffffff';
+        btnStatic.style.background = '#f3f4f6';
+        btnStatic.style.color = '#374151';
+        if (indexMapInstance) setTimeout(() => { indexMapInstance.invalidateSize(); }, 100);
+      } else {
+        mapEl.style.display = 'none';
+        staticEl.style.display = 'block';
+        btnStatic.style.background = '#2563eb';
+        btnStatic.style.color = '#ffffff';
+        btnLive.style.background = '#f3f4f6';
+        btnLive.style.color = '#374151';
+      }
+    }
+
+    function zoomIndexAllHouses() {
+      if (indexMapInstance && indexMarkers.length > 0) {
+        const group = new L.featureGroup(indexMarkers);
+        indexMapInstance.fitBounds(group.getBounds().pad(0.1));
+      }
+    }
+
+    function initIndexVisualizations() {
+      const houseData = [{"name": "House 11", "lat": 26.843756, "lng": 92.90734, "phone": "+916002149971", "url": "https://maps.app.goo.gl/aQ5wAbo3zzE8o9DU6"}, {"name": "House 12", "lat": 26.843469, "lng": 92.906882, "phone": "+918453373207", "url": "https://maps.app.goo.gl/6u578yntRguJEykGA"}, {"name": "House 13", "lat": 26.843294, "lng": 92.906724, "phone": "+917099362096", "url": "https://maps.app.goo.gl/a5MNo8dJaN1hpNG48"}, {"name": "House 15", "lat": 26.843064, "lng": 92.906378, "phone": "+919394100250", "url": "https://maps.app.goo.gl/bHBwY42QcHyfS28m6"}, {"name": "House 16", "lat": 26.84324, "lng": 92.906518, "phone": "+919101648179", "url": "https://maps.app.goo.gl/a3FsrpPud7EUwHei8"}, {"name": "House 17", "lat": 26.843092, "lng": 92.906345, "phone": "+918471919773", "url": "https://maps.app.goo.gl/z675aZUfW47LzVMz7"}, {"name": "House 18", "lat": 26.842962, "lng": 92.906035, "phone": "+919706540655", "url": "https://maps.app.goo.gl/p8JqhW3iU7Y7ogn56"}, {"name": "House 19", "lat": 26.842938, "lng": 92.905899, "phone": "+919954139339", "url": "https://maps.app.goo.gl/PZsaijWZkknnCM2U8"}, {"name": "House 2", "lat": 26.844826, "lng": 92.908615, "phone": "+919101050445", "url": "https://maps.app.goo.gl/nTCxhZ7RrRodV2RS7"}, {"name": "House 21", "lat": 26.842477, "lng": 92.905377, "phone": "+919854623350", "url": "https://maps.app.goo.gl/8wKukvSmjoGjwEcj6"}, {"name": "House 23", "lat": 26.842803, "lng": 92.904632, "phone": "+916900991068", "url": "https://maps.app.goo.gl/CXiP1U2nrvqjZkXq8"}, {"name": "House 25", "lat": 26.845026, "lng": 92.909697, "phone": "+919365127726", "url": "https://maps.app.goo.gl/kG6SUhohdHUwCisQ9"}, {"name": "House 26", "lat": 26.845226, "lng": 92.909659, "phone": "+918011759452", "url": "https://maps.app.goo.gl/U1Ssnt4zTe3A1E1q6"}, {"name": "House 28", "lat": 26.844663, "lng": 92.909756, "phone": "+917002032307", "url": "https://maps.app.goo.gl/9i81TRxZPc2dDScg7"}, {"name": "House 3", "lat": 26.84486, "lng": 92.908939, "phone": "+916900259979", "url": "https://maps.app.goo.gl/XYfG4WgnYfALiz7CA"}, {"name": "House 4", "lat": 26.84488, "lng": 92.908763, "phone": "+917086754681", "url": "https://maps.app.goo.gl/s744NJdENe5uVMacA"}, {"name": "House 5", "lat": 26.844813, "lng": 92.908465, "phone": "+918876175372", "url": "https://maps.app.goo.gl/8S8Di7PoZebhyqe79"}, {"name": "House 6", "lat": 26.844494, "lng": 92.908252, "phone": "+919365910126", "url": "https://maps.app.goo.gl/tuE8Jng7WxpPKszTA"}, {"name": "House 8", "lat": 26.843958, "lng": 92.907703, "phone": "+916000583396", "url": "https://maps.app.goo.gl/PmZuAyALrvuus8NU9"}, {"name": "House 9", "lat": 26.843889, "lng": 92.907561, "phone": "+919395468311", "url": "https://maps.app.goo.gl/83i3HHYHNFXgtqFU6"}, {"name": "House Dibyar Khura 1", "lat": 26.844826, "lng": 92.908735, "phone": "+919101839946", "url": "https://maps.app.goo.gl/PP9aczgcPF7vDay5A"}, {"name": "Ranjan 27", "lat": 26.845226, "lng": 92.909659, "phone": "+917002560576", "url": "https://maps.app.goo.gl/U1Ssnt4zTe3A1E1q6"}];
+
+      // 1. Social Network Graph
+      const netContainer = document.getElementById('indexNetworkGraph');
+      if (netContainer && window.vis) {
+        const hubs = [
+          { id: 'h_mdu', label: 'Madhabdev Univ (MDU)', color: '#3b82f6', size: 26 },
+          { id: 'h_thb', label: 'THB College', color: '#60a5fa', size: 24 },
+          { id: 'h_rgu', label: 'Rajiv Gandhi Univ (RGU)', color: '#2563eb', size: 24 },
+          { id: 'h_dgcd', label: 'Darrang College', color: '#0284c7', size: 22 },
+          { id: 'h_das', label: 'DAS Family Clan', color: '#f59e0b', size: 25 },
+          { id: 'h_vil', label: 'Rangachakua Village', color: '#10b981', size: 24 },
+          { id: 'h_act', label: 'Activism & Science', color: '#ef4444', size: 20 },
+          { id: 'h_lit', label: 'Literary Titans', color: '#8b5cf6', size: 22 }
+        ];
+        const nodes = hubs.map(h => ({ id: h.id, label: h.label, color: h.color, size: h.size, shape: 'dot' }));
+        const edges = [];
+
+        // Sample connections from allContacts
+        const contactsList = window.contacts || [];
+        contactsList.slice(0, 140).forEach((c, idx) => {
+          const name = `${c['First Name'] || ''} ${c['Last Name'] || ''}`.trim();
+          const org = c['Organization Name'] || '';
+          let target = null;
+          if (org.includes('Madhabdev')) target = 'h_mdu';
+          else if (org.includes('Tyagbir')) target = 'h_thb';
+          else if (org.includes('Rajiv Gandhi')) target = 'h_rgu';
+          else if (org.includes('Darrang')) target = 'h_dgcd';
+          else if (org === 'DAS') target = 'h_das';
+          else if (['SFI', 'Yukti', 'AASU'].some(k => org.includes(k))) target = 'h_act';
+          else if (['Harvard', 'Literature', 'Suvra', 'Iitg'].some(k => org.includes(k))) target = 'h_lit';
+          else if (name.toLowerCase().includes('house') || name.toLowerCase().includes('ranjan 27')) target = 'h_vil';
+
+          if (target) {
+            const nid = 'c_' + idx;
+            const isVip = (c['Labels'] || '').includes('VIP') || (c['Labels'] || '').includes('Special') || org.includes('Harvard');
+            nodes.push({ id: nid, label: name, color: isVip ? '#ec4899' : '#94a3b8', size: isVip ? 12 : 7, shape: 'circle' });
+            edges.push({ from: target, to: nid, color: '#e2e8f0' });
+          }
+        });
+
+        new vis.Network(netContainer, { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) }, {
+          physics: { barnesHut: { gravitationalConstant: -2000, springLength: 60 } },
+          interaction: { hover: true }
+        });
+      }
+
+      // 2. Leaflet Map (Esri Zero API Key)
+      if (document.getElementById('indexMap') && window.L) {
+        indexMapInstance = L.map('indexMap').setView([26.8438, 92.9073], 16);
+        const street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri',
+          maxZoom: 19
+        }).addTo(indexMapInstance);
+
+        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri',
+          maxZoom: 19
+        });
+
+        L.control.layers({ "🗺️ Street Map": street, "🛰️ Satellite": satellite }, null, { position: 'topright' }).addTo(indexMapInstance);
+
+        indexMarkers = [];
+        houseData.forEach(h => {
+          const m = L.marker([h.lat, h.lng]).addTo(indexMapInstance);
+          m.bindPopup(`<strong>${h.name}</strong><br>Phone: <a href="tel:${h.phone}">${h.phone}</a><br><a href="${h.url}" target="_blank">Google Maps ↗</a>`);
+          indexMarkers.push(m);
+        });
+      }
+
+      // 3. Distance Profile Area Chart
+      const distCanvas = document.getElementById('indexDistanceChart');
+      if (distCanvas && window.Chart) {
+        new Chart(distCanvas, {
+          type: 'line',
+          data: {
+            labels: ["H1 (Khura)", "H2", "H3", "H4", "H5", "H6", "H8", "H9", "H11", "H12", "H13", "H15", "H16", "H17", "H18", "H19", "H21", "H23", "H25", "H26", "H27", "H28"],
+            datasets: [{
+              label: 'Cumulative Distance (meters)',
+              data: [0, 11.9, 44.3, 61.9, 92.4, 133.7, 214.4, 230.4, 256.9, 312.4, 337.4, 380.2, 404.2, 428.0, 462.0, 475.7, 548.6, 630.9, 1190.9, 1213.5, 1213.5, 1276.8],
+              borderColor: '#2563eb',
+              backgroundColor: 'rgba(37, 99, 235, 0.1)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+
+      // 4. Life Spheres Radar Chart
+      const radarCanvas = document.getElementById('indexRadarChart');
+      if (radarCanvas && window.Chart) {
+        new Chart(radarCanvas, {
+          type: 'radar',
+          data: {
+            labels: ['Higher Academia', 'Family Clan (DAS)', 'Rural Roots (Sonitpur)', 'Social Movements', 'Local Utilities', 'Literary Culture'],
+            datasets: [{
+              label: 'Domain Strength',
+              data: [95, 96, 100, 75, 84, 88],
+              backgroundColor: 'rgba(16, 185, 129, 0.2)',
+              borderColor: '#10b981',
+              pointBackgroundColor: '#10b981'
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+
+
+      // 3B. Positions & Occupational Spectrum Chart
+      const posCanvas = document.getElementById('indexPositionsChart');
+      if (posCanvas && window.Chart) {
+        new Chart(posCanvas, {
+          type: 'bar',
+          data: {
+            labels: [
+              'Students & Peer Cohorts',
+              'Acquaintances (Sinaki)',
+              'Kinship & Relational Ties',
+              'Faculty & Educators',
+              'Scientists & PhD Scholars',
+              'Commerce, Banking & Owners',
+              'Arts, Literature & Culture',
+              'Civil Services & Governance',
+              'Vocational & Field Services',
+              'Medicine & Healthcare'
+            ],
+            datasets: [{
+              label: 'Contacts',
+              data: [181, 123, 64, 55, 22, 21, 15, 7, 6, 2],
+              backgroundColor: [
+                '#3b82f6', '#64748b', '#f59e0b', '#10b981', '#8b5cf6',
+                '#06b6d4', '#ec4899', '#ef4444', '#84cc16', '#f97316'
+              ],
+              borderRadius: 4
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { grid: { display: true } } }
+          }
+        });
+      }
+
+      // Seniority Hierarchy Chart
+      const senCanvas = document.getElementById('indexSeniorityChart');
+      if (senCanvas && window.Chart) {
+        new Chart(senCanvas, {
+          type: 'bar',
+          data: {
+            labels: [
+              'Directors & Officers (SI, ACS)',
+              'Faculty & Professors',
+              'Research Scholars & Scientists',
+              'Senior Alumni & Postgrad',
+              'Undergraduate Students',
+              'School Classmates'
+            ],
+            datasets: [{
+              label: 'Position Hierarchy',
+              data: [10, 45, 22, 42, 80, 14],
+              backgroundColor: [
+                '#dc2626', '#f59e0b', '#8b5cf6', '#2563eb', '#38bdf8', '#94a3b8'
+              ],
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+
+      // 5. Orgs Chart
+      const orgCanvas = document.getElementById('indexOrgChart');
+      if (orgCanvas && window.Chart) {
+        new Chart(orgCanvas, {
+          type: 'bar',
+          data: {
+            labels: ["MDU", "THB College", "RGU", "DGCD", "DAS Clan", "Facebook", "RHSS", "Gauhati Univ", "GenOne", "MZU"],
+            datasets: [{ label: 'Contacts', data: [70, 51, 43, 36, 23, 26, 18, 13, 10, 7], backgroundColor: '#3b82f6', borderRadius: 4 }]
+          },
+          options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      // 6. Surnames Chart
+      const surnameCanvas = document.getElementById('indexSurnameChart');
+      if (surnameCanvas && window.Chart) {
+        new Chart(surnameCanvas, {
+          type: 'bar',
+          data: {
+            labels: ["Das", "Saikia", "Borah", "Hazarika", "Bhuyan", "Kalita", "Baruah", "Gogoi", "Sharma", "Chetry", "Deka", "Nath"],
+            datasets: [{ label: 'Contacts', data: [31, 18, 13, 10, 9, 9, 8, 8, 7, 6, 5, 5], backgroundColor: '#0284c7', borderRadius: 4 }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      // 7. Region Chart
+      const regCanvas = document.getElementById('indexRegionChart');
+      if (regCanvas && window.Chart) {
+        new Chart(regCanvas, {
+          type: 'bar',
+          data: {
+            labels: ["Sonitpur", "Lakhimpur", "Biswanath", "Kamrup M", "Dhemaji", "Jorhat", "Nagaon", "Arunachal"],
+            datasets: [{ label: 'Contacts', data: [217, 56, 38, 38, 12, 11, 10, 6], backgroundColor: '#10b981', borderRadius: 4 }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      // 8. Roles Chart
+      const roleCanvas = document.getElementById('indexRoleChart');
+      if (roleCanvas && window.Chart) {
+        new Chart(roleCanvas, {
+          type: 'bar',
+          data: {
+            labels: ["Student", "Sinaki", "Class-Mate", "Relative", "Neighbour", "Batch-Mate", "Senior", "Colleague", "Professor", "Teacher"],
+            datasets: [{ label: 'Contacts', data: [52, 51, 45, 24, 21, 15, 15, 14, 11, 8], backgroundColor: '#8b5cf6', borderRadius: 4 }]
+          },
+          options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      // 9. Telecom Chart
+      const telCanvas = document.getElementById('indexTelecomChart');
+      if (telCanvas && window.Chart) {
+        new Chart(telCanvas, {
+          type: 'doughnut',
+          data: {
+            labels: ['Modern 4G', 'Airtel Legacy', 'BSNL Legacy'],
+            datasets: [{ data: [448, 120, 35], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981'] }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+      }
+    }
   </script>
 </body>
 </html>
