@@ -4,17 +4,18 @@ A privacy-focused, high-performance personal contact intelligence and spatial an
 
 🚀 **Live Deployment (GitHub Pages)**:
 - 📋 **Contacts Manager (Main)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
-- 🌐 **NEXUS Visualizer**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
+- 📍 **Spatial Field Nexus (New 1,279 Dataset)**: [https://angsumi.online/Contact/visualizations/spatial_network_nexus.html](https://angsumi.online/Contact/visualizations/spatial_network_nexus.html)
+- 🌐 **NEXUS Visualizer (Original 606 Dataset)**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
 - 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
 
 ---
 
 ## 🔗 Inter-Dashboard Cross Navigation
 All portals include integrated top navigation bars enabling instant switching between views:
-- From **Contacts Manager**: Click the header buttons `📊 Analytics`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
-- From **NEXUS Visualizer**: Click `📋 Contacts` or `📈 EDA Hub` directly in the top action bar.
-- From **EDA Analytics Hub**: Click `📋 Contacts Manager` or `🌐 NEXUS Visualizer` in the sticky header.
-
+- From **Contacts Manager**: Click `📊 Analytics`, `📍 Spatial Field Nexus`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
+- From **Spatial Field Nexus**: Click `📋 Contacts Portal`, `🌐 NEXUS Hub`, or `📈 EDA Hub`.
+- From **NEXUS Visualizer**: Click `📋 Contacts`, `📍 Field Nexus`, or `📈 EDA Hub`.
+- From **EDA Analytics Hub**: Click `📋 Contacts Manager`, `📍 Spatial Field Nexus`, or `🌐 NEXUS Visualizer`.
 
 ## 📁 Repository Structure
 
@@ -27,18 +28,21 @@ Contact/
 ├── README.md                    # Project documentation
 │
 ├── data/                        # Datasets and archives
-│   ├── contacts.csv             # Cleaned & de-duplicated contacts dataset
+│   ├── new_contacts.csv         # New 1,279 field-verified contacts dataset
+│   ├── contacts.csv             # Cleaned & de-duplicated contacts dataset (606 records)
 │   ├── contacts.csv.bak         # Dataset backup
 │   └── dleted_contact.csv       # Archived deleted / merged records
 │
 ├── visualizations/              # Standalone interactive visualization dashboards
-│   ├── visualize_contacts_nexus.html  # NEXUS Intelligence & Spatial Graph
+│   ├── spatial_network_nexus.html     # Spatial Field Nexus (1,279 Records GIS & Network)
+│   ├── visualize_contacts_nexus.html  # NEXUS Intelligence & Spatial Graph (606 Records)
 │   └── eda_dashboard.html       # 9 Multi-Disciplinary Exploratory Visualizations
 │
 ├── scripts/                     # Python ETL pipelines & development servers
+│   ├── generate_micro_spatial_nexus.py # Generator for Spatial Field Nexus dashboard
+│   ├── generate_nexus_dashboard.py     # Generator for NEXUS dashboard
 │   ├── build_index.py           # Injects CSV data into template to build index.html
 │   ├── build_visualizer.py      # Spatial ETL & metadata enricher
-│   ├── generate_nexus_dashboard.py # Generator for NEXUS dashboard
 │   └── server.py                # Local development server with CSV saveback API
 │
 └── assets/                      # Generated visualization graphics and maps
@@ -56,9 +60,19 @@ Contact/
 
 ## 🚀 Key Features
 
+- **Spatial Field Nexus (`visualizations/spatial_network_nexus.html`)**:
+  - **1,279 Contact Field Analytics**: Landmark-level address parsing with 1,060 explicit landmark routes.
+  - **Geospatial Village Micro-Clustering**: Leaflet GIS map with interactive pin-clustering covering Khakanbasti, Ajarguri, Charipukhuri, Agripam, Gorbil, Rangachakua, Morisuti, Batamari, and surrounding sectors.
+  - **Physics Social Graph**: Vis-Network graph mapping contacts directly to their village clusters.
+  - **Demographic & Telecom Intelligence**: Assamese surname distribution and mobile operator routing.
+  - **Instant Live Search & Dialer**: Searchable directory with click-to-dial functionality and CSV export.
 - **Contacts Manager (`index.html`)**:
   - Live search, multi-select category filters, vCard export, and contact editor.
   - Built-in analytics tabs and quick navigation to specialized dashboards.
+- **NEXUS Visualizer (`visualizations/visualize_contacts_nexus.html`)**:
+  - Executive KPI HUD, multi-dimensional relational social orbit, and 12-dimensional metadata radar.
+- **EDA Hub (`visualizations/eda_dashboard.html`)**:
+  - 8 high-resolution analytical visual reports and spatial survey route inspections.
 - **NEXUS Visualizer (`visualizations/visualize_contacts_nexus.html`)**:
   - **Executive KPI HUD**: Active nodes, spatial footprint, institutional affinity, dual-line penetration.
   - **Interactive GIS Map (Leaflet.js + MarkerCluster)**: Assam Brahmaputra Valley micro-clustering (Sonitpur, Lakhimpur, Kamrup, Biswanath) with international links (USA, Slovakia, Australia, UAE, UK).
