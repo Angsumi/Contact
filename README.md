@@ -2,9 +2,19 @@
 
 A privacy-focused, high-performance personal contact intelligence and spatial analytics dashboard. Transforms raw contact archives into interactive knowledge graphs, geospatial density maps, and exploratory visualizations.
 
-🚀 **Live Deployment (GitHub Pages)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
+🚀 **Live Deployment (GitHub Pages)**:
+- 📋 **Contacts Manager (Main)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
+- 🌐 **NEXUS Visualizer**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
+- 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
 
 ---
+
+## 🔗 Inter-Dashboard Cross Navigation
+All portals include integrated top navigation bars enabling instant switching between views:
+- From **Contacts Manager**: Click the header buttons `📊 Analytics`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
+- From **NEXUS Visualizer**: Click `📋 Contacts` or `📈 EDA Hub` directly in the top action bar.
+- From **EDA Analytics Hub**: Click `📋 Contacts Manager` or `🌐 NEXUS Visualizer` in the sticky header.
+
 
 ## 📁 Repository Structure
 
