@@ -6,7 +6,7 @@ import os
 import sys
 
 PORT = 8000
-DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 HEADERS = [
     "First Name", "Middle Name", "Last Name", "Phonetic First Name", "Phonetic Middle Name", "Phonetic Last Name",
@@ -31,14 +31,15 @@ class ContactsHandler(http.server.SimpleHTTPRequestHandler):
                 data = json.loads(post_data.decode('utf-8'))
                 contacts = data.get('contacts', [])
                 
-                # Write to contacts.csv
-                csv_path_main = os.path.join(DIRECTORY, 'contacts.csv')
+                # Write to data/contacts.csv
+                csv_path_main = os.path.join(DIRECTORY, 'data', 'contacts.csv')
                 
                 with open(csv_path_main, 'w', encoding='utf-8', newline='') as f:
                     writer = csv.DictWriter(f, fieldnames=HEADERS, extrasaction='ignore')
                     writer.writeheader()
                     for c in contacts:
                         writer.writerow(c)
+
                 
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')

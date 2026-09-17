@@ -1,14 +1,19 @@
+import os
 import csv
 import json
 import re
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_PATH = os.path.join(BASE_DIR, 'data', 'contacts.csv')
+DELETED_CSV_PATH = os.path.join(BASE_DIR, 'data', 'dleted_contact.csv')
+
 # Load contacts.csv
-with open('/home/angsuman/extra_spac/Contact/contacts.csv', 'r', encoding='utf-8') as f:
+with open(CSV_PATH, 'r', encoding='utf-8') as f:
     contacts = list(csv.DictReader(f))
 
 # Load deleted contacts for comparison
 try:
-    with open('/home/angsuman/extra_spac/Contact/dleted_contact.csv', 'r', encoding='utf-8') as f:
+    with open(DELETED_CSV_PATH, 'r', encoding='utf-8') as f:
         deleted_contacts = list(csv.DictReader(f))
 except Exception:
     deleted_contacts = []
