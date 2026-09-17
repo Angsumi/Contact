@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dipankar Exploratory Data Dashboard (1,279 Records)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+                <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+                    <span class="text-cyan-400">📊 Dipankar Field Analytics</span> Exploratory Dashboard
+                </h1>
+                <p class="text-xs text-slate-400">1,279 Contacts • Landmark Taxonomy • Telecom Distribution • Rural Sector Density</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+                <a href="index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg font-semibold transition flex items-center gap-1.5">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span>Matrix Home</span>
+                </a>
+                <a href="visualize_nexus.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg font-semibold transition flex items-center gap-1.5">
+                    <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i> <span>Dipankar Nexus</span>
+                </a>
+                <a href="eda_dashboard.html" class="px-3 py-1.5 bg-cyan-600 text-white rounded-lg font-semibold transition flex items-center gap-1.5">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i> <span>Dipankar EDA</span>
+                </a>
+                <a href="../index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg font-semibold transition">
+                    <span>Main Portal</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Total Contacts</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">1,279</p>
+                <span class="text-[10px] text-cyan-600 font-medium">100% Active</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Landmark Guides</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">1,060</p>
+                <span class="text-[10px] text-emerald-600 font-medium">82.9% Landmark Density</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Mapped Localities</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">365</p>
+                <span class="text-[10px] text-indigo-600 font-medium">28.5% Geocoded</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Village Sectors</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">48</p>
+                <span class="text-[10px] text-amber-600 font-medium">Sonitpur & Biswanath</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Multiline Phones</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">26</p>
+                <span class="text-[10px] text-purple-600 font-medium">Dual Numbers</span>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <p class="text-xs text-slate-500 font-semibold uppercase">Reachability</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">99.8%</p>
+                <span class="text-[10px] text-rose-600 font-medium">Verified Status</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-900 mb-1">🏛️ Top Rural Landmarks Mentioned in Navigation Directions</h3>
+                <p class="text-xs text-slate-500 mb-4">Frequency of navigational anchor points used in contact addresses</p>
+                <div class="h-72">
+                    <canvas id="landmarkChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-900 mb-1">🏡 Village Cluster Density</h3>
+                <p class="text-xs text-slate-500 mb-4">Distribution across top 12 village sectors in Sonitpur district</p>
+                <div class="h-72">
+                    <canvas id="villageEdaChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-900 mb-1">👥 Assamese Surname Frequency & Lineages</h3>
+                <p class="text-xs text-slate-500 mb-4">Distribution of top family clan surnames</p>
+                <div class="h-72">
+                    <canvas id="surnameEdaChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-900 mb-1">📱 Telecommunications Carrier Distribution</h3>
+                <p class="text-xs text-slate-500 mb-4">Mobile operator routing breakdown across 1,279 lines</p>
+                <div class="h-72 flex items-center justify-center">
+                    <canvas id="operatorEdaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const topVillages = [["Khakanbasti", 36], ["Ajarguri", 28], ["Charipukhuri", 25], ["Agripam", 20], ["Gorbil", 17], ["1 No. Batamari", 16], ["Rangachakua", 16], ["Morisuti", 15], ["2 No. Batamari", 13], ["Thakurbari", 12], ["Rai Gaon", 11], ["Itakhola", 10]];
+        const topSurnames = [["Devi", 86], ["Newar", 66], ["Mili", 40], ["Chetry", 38], ["Borah", 37], ["Thapa", 31], ["Munda", 28], ["Saikia", 24], ["Das", 22], ["Nayak", 20], ["Hazarika", 19], ["Sharma", 17]];
+        const topLandmarks = [["Shop / Dukan", 227], ["School / LP", 166], ["Temple / Mondir", 77], ["Naamghor", 57], ["Water Supply", 39], ["Drain / Culvert", 36], ["Tower / Transformer", 29], ["Church / Mosque", 17], ["Bridge / Dolong", 14], ["Panchayat / Office", 10]];
+        const operators = {"Airtel 4G": 285, "Jio 4G": 781, "Other Carrier": 164, "BSNL / Legacy": 49};
+
+        lucide.createIcons();
+
+        new Chart(document.getElementById('landmarkChart'), {
+            type: 'bar',
+            data: {
+                labels: topLandmarks.map(l => l[0]),
+                datasets: [{ data: topLandmarks.map(l => l[1]), backgroundColor: '#0891b2', borderRadius: 4 }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('villageEdaChart'), {
+            type: 'bar',
+            data: {
+                labels: topVillages.map(v => v[0]),
+                datasets: [{ data: topVillages.map(v => v[1]), backgroundColor: '#4f46e5', borderRadius: 4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('surnameEdaChart'), {
+            type: 'bar',
+            data: {
+                labels: topSurnames.map(s => s[0]),
+                datasets: [{ data: topSurnames.map(s => s[1]), backgroundColor: '#059669', borderRadius: 4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        new Chart(document.getElementById('operatorEdaChart'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(operators),
+                datasets: [{ data: Object.values(operators), backgroundColor: ['#0891b2', '#4f46e5', '#059669', '#d97706'] }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    </script>
+</body>
+</html>

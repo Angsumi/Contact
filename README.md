@@ -3,19 +3,21 @@
 A privacy-focused, high-performance personal contact intelligence and spatial analytics dashboard. Transforms raw contact archives into interactive knowledge graphs, geospatial density maps, and exploratory visualizations.
 
 🚀 **Live Deployment (GitHub Pages)**:
-- 📋 **Contacts Manager (Main Portal)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
-- 📍 **Dipankar Field Matrix (`/dipankar`)**: [https://angsumi.online/Contact/dipankar/](https://angsumi.online/Contact/dipankar/)
-- 🌐 **NEXUS Visualizer (Original Dataset)**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
-- 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
+- 📋 **Original Contacts Hub (606 Records)**:
+  - 📋 **Contacts Manager (Main Portal)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
+  - 🌐 **NEXUS Visualizer**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
+  - 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
+- 📍 **Dipankar Suite (1,279 Field Records - `/dipankar`)**:
+  - 📍 **Dipankar Field Matrix**: [https://angsumi.online/Contact/dipankar/](https://angsumi.online/Contact/dipankar/)
+  - 🌐 **Dipankar NEXUS Visualizer**: [https://angsumi.online/Contact/dipankar/visualize_nexus.html](https://angsumi.online/Contact/dipankar/visualize_nexus.html)
+  - 📈 **Dipankar EDA Dashboard**: [https://angsumi.online/Contact/dipankar/eda_dashboard.html](https://angsumi.online/Contact/dipankar/eda_dashboard.html)
 
 ---
 
 ## 🔗 Inter-Dashboard Cross Navigation
 All portals include integrated top navigation bars enabling instant switching between views:
-- From **Contacts Manager**: Click `📊 Analytics`, `📍 Dipankar Field Matrix`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
-- From **Dipankar Field Matrix (`/dipankar`)**: Click `📋 Contacts Portal`, `🌐 NEXUS Hub`, or `📈 EDA Hub`.
-- From **NEXUS Visualizer**: Click `📋 Contacts`, `📍 Dipankar`, or `📈 EDA Hub`.
-- From **EDA Analytics Hub**: Click `📋 Contacts Manager`, `📍 Dipankar Field Matrix`, or `🌐 NEXUS Visualizer`.
+- **From Original Portals (`/` & `/visualizations/`)**: Cross-links to Contacts Manager, NEXUS Visualizer, EDA Hub, and the Dipankar Field Suite.
+- **From Dipankar Suite (`/dipankar/`)**: Dedicated internal navigation between **Dipankar Matrix** (`index.html`), **Dipankar NEXUS** (`visualize_nexus.html`), **Dipankar EDA** (`eda_dashboard.html`), plus a return link to the Original Contacts Hub (`../index.html`).
 
 ## 📁 Repository Structure
 
@@ -23,12 +25,14 @@ The repository is modularly organized into distinct folders:
 
 ```text
 Contact/
-├── index.html                   # Main entry point & interactive contacts manager
+├── index.html                   # Main entry point & interactive contacts manager (606 records)
 ├── template.html                # Base template for generating index.html
 ├── README.md                    # Project documentation
 │
-├── dipankar/                    # Dedicated folder for the 1,279 field contacts app
-│   └── index.html               # Dipankar Field Matrix dashboard (accessible at /dipankar)
+├── dipankar/                    # Dedicated folder for the 1,279 field contacts suite
+│   ├── index.html               # Dipankar Field Matrix dashboard (accessible at /dipankar)
+│   ├── visualize_nexus.html     # Dedicated Dipankar NEXUS Graph & GIS Map
+│   └── eda_dashboard.html       # Dedicated Dipankar EDA & Demographics Visualizer
 │
 ├── data/                        # Datasets and archives
 │   ├── new_contacts.csv         # New 1,279 field-verified contacts dataset
@@ -36,13 +40,13 @@ Contact/
 │   ├── contacts.csv.bak         # Dataset backup
 │   └── dleted_contact.csv       # Archived deleted / merged records
 │
-├── visualizations/              # Standalone interactive visualization dashboards
+├── visualizations/              # Standalone interactive visualization dashboards (606 records)
 │   ├── visualize_contacts_nexus.html  # NEXUS Intelligence & Spatial Graph (606 Records)
-│   └── eda_dashboard.html       # 9 Multi-Disciplinary Exploratory Visualizations
+│   └── eda_dashboard.html       # Multi-Disciplinary Exploratory Visualizations (606 Records)
 │
 ├── scripts/                     # Python ETL pipelines & development servers
-│   ├── generate_micro_spatial_nexus.py # Generator for /dipankar dashboard
-│   ├── generate_nexus_dashboard.py     # Generator for NEXUS dashboard
+│   ├── generate_dipankar_suite.py # Generator for complete /dipankar suite
+│   ├── generate_nexus_dashboard.py # Generator for original NEXUS dashboard
 │   ├── build_index.py           # Injects CSV data into template to build index.html
 │   ├── build_visualizer.py      # Spatial ETL & metadata enricher
 │   └── server.py                # Local development server with CSV saveback API
