@@ -313,6 +313,10 @@ html_index = f"""<!DOCTYPE html>
                     <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
                     <span>📈 Dipankar EDA</span>
                 </a>
+                <a href="../1dd/index.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-700/60 text-rose-300 transition">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i>
+                    <span>🏘️ 1DD (8 Villages)</span>
+                </a>
                 <a href="../index.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white transition">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     <span>Main Portal</span>
@@ -689,6 +693,9 @@ html_nexus = f"""<!DOCTYPE html>
                 <a href="eda_dashboard.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
                     <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i> <span>Dipankar EDA</span>
                 </a>
+                <a href="../1dd/index.html" class="px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-700/60 rounded-lg text-xs font-semibold transition">
+                    <span>🏘️ 1DD (8 Villages)</span>
+                </a>
                 <a href="../index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg text-xs font-semibold transition">
                     <span>Main Portal</span>
                 </a>
@@ -781,6 +788,9 @@ html_eda = f"""<!DOCTYPE html>
                 </a>
                 <a href="eda_dashboard.html" class="px-3 py-1.5 bg-cyan-600 text-white rounded-lg font-semibold transition flex items-center gap-1.5">
                     <i data-lucide="bar-chart-3" class="w-4 h-4"></i> <span>Dipankar EDA</span>
+                </a>
+                <a href="../1dd/index.html" class="px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-700/60 rounded-lg font-semibold transition">
+                    <span>🏘️ 1DD (8 Villages)</span>
                 </a>
                 <a href="../index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg font-semibold transition">
                     <span>Main Portal</span>

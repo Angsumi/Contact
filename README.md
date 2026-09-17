@@ -3,21 +3,26 @@
 A privacy-focused, high-performance personal contact intelligence and spatial analytics dashboard. Transforms raw contact archives into interactive knowledge graphs, geospatial density maps, and exploratory visualizations.
 
 🚀 **Live Deployment (GitHub Pages)**:
-- 📋 **Original Contacts Hub (606 Records)**:
-  - 📋 **Contacts Manager (Main Portal)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
-  - 🌐 **NEXUS Visualizer**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
-  - 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
+- 🏘️ **1DD 8-Village Focus Suite (`/1dd`)**:
+  - 📍 **1DD Focus Matrix**: [https://angsumi.online/Contact/1dd/](https://angsumi.online/Contact/1dd/)
+  - 🌐 **1DD Focus NEXUS Graph**: [https://angsumi.online/Contact/1dd/visualize_nexus.html](https://angsumi.online/Contact/1dd/visualize_nexus.html)
+  - 📈 **1DD Focus Analytics & Carrier Audit**: [https://angsumi.online/Contact/1dd/eda_dashboard.html](https://angsumi.online/Contact/1dd/eda_dashboard.html)
 - 📍 **Dipankar Suite (1,279 Field Records - `/dipankar`)**:
   - 📍 **Dipankar Field Matrix**: [https://angsumi.online/Contact/dipankar/](https://angsumi.online/Contact/dipankar/)
   - 🌐 **Dipankar NEXUS Visualizer**: [https://angsumi.online/Contact/dipankar/visualize_nexus.html](https://angsumi.online/Contact/dipankar/visualize_nexus.html)
   - 📈 **Dipankar EDA Dashboard**: [https://angsumi.online/Contact/dipankar/eda_dashboard.html](https://angsumi.online/Contact/dipankar/eda_dashboard.html)
+- 📋 **Original Contacts Hub (606 Records)**:
+  - 📋 **Contacts Manager (Main Portal)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
+  - 🌐 **NEXUS Visualizer**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
+  - 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
 
 ---
 
 ## 🔗 Inter-Dashboard Cross Navigation
 All portals include integrated top navigation bars enabling instant switching between views:
-- **From Original Portals (`/` & `/visualizations/`)**: Cross-links to Contacts Manager, NEXUS Visualizer, EDA Hub, and the Dipankar Field Suite.
-- **From Dipankar Suite (`/dipankar/`)**: Dedicated internal navigation between **Dipankar Matrix** (`index.html`), **Dipankar NEXUS** (`visualize_nexus.html`), **Dipankar EDA** (`eda_dashboard.html`), plus a return link to the Original Contacts Hub (`../index.html`).
+- **From 1DD Suite (`/1dd/`)**: Internal switching between **1DD Matrix** (`index.html`), **1DD NEXUS** (`visualize_nexus.html`), **1DD Analytics** (`eda_dashboard.html`), plus direct links to **Dipankar Suite** and **Main Portal**.
+- **From Dipankar Suite (`/dipankar/`)**: Internal navigation between **Dipankar Matrix**, **Dipankar NEXUS**, **Dipankar EDA**, **1DD Focus Suite**, and **Main Portal**.
+- **From Original Portals (`/` & `/visualizations/`)**: Cross-links to Contacts Manager, 1DD Suite, Dipankar Field Suite, NEXUS Visualizer, and EDA Hub.
 
 ## 📁 Repository Structure
 
@@ -29,12 +34,28 @@ Contact/
 ├── template.html                # Base template for generating index.html
 ├── README.md                    # Project documentation
 │
+├── 1dd/                         # 8 Key Focus Villages Suite & isolated downloads
+│   ├── index.html               # 1DD Field Matrix & CSV download hub
+│   ├── visualize_nexus.html     # Dedicated 8-village GIS & physics network graph
+│   ├── eda_dashboard.html       # 8-village demographic & carrier breakdown
+│   └── data/                    # Web-ready downloadable village CSVs
+│       ├── rangachakua_contacts.csv
+│       ├── 1_no_batamari_contacts.csv
+│       ├── 2_no_batamari_contacts.csv
+│       ├── agripam_contacts.csv
+│       ├── rampur_contacts.csv
+│       ├── randupam_contacts.csv
+│       ├── charipukhuri_contacts.csv
+│       ├── morisuti_contacts.csv
+│       └── all_8_villages_contacts.csv
+│
 ├── dipankar/                    # Dedicated folder for the 1,279 field contacts suite
 │   ├── index.html               # Dipankar Field Matrix dashboard (accessible at /dipankar)
 │   ├── visualize_nexus.html     # Dedicated Dipankar NEXUS Graph & GIS Map
 │   └── eda_dashboard.html       # Dedicated Dipankar EDA & Demographics Visualizer
 │
 ├── data/                        # Datasets and archives
+│   ├── villages/                # Generated standalone CSVs for individual villages
 │   ├── new_contacts.csv         # New 1,279 field-verified contacts dataset
 │   ├── contacts.csv             # Cleaned & de-duplicated contacts dataset (606 records)
 │   ├── contacts.csv.bak         # Dataset backup
@@ -45,6 +66,7 @@ Contact/
 │   └── eda_dashboard.html       # Multi-Disciplinary Exploratory Visualizations (606 Records)
 │
 ├── scripts/                     # Python ETL pipelines & development servers
+│   ├── generate_1dd_suite.py    # Generator for /1dd suite and village CSVs
 │   ├── generate_dipankar_suite.py # Generator for complete /dipankar suite
 │   ├── generate_nexus_dashboard.py # Generator for original NEXUS dashboard
 │   ├── build_index.py           # Injects CSV data into template to build index.html

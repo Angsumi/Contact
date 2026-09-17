@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1DD Focus NEXUS - 8 Villages Spatial Graph Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-base: #0a0e17;
+            --bg-card: rgba(17, 24, 39, 0.92);
+            --border: rgba(55, 65, 81, 0.8);
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
+            --text-main: #f9fafb;
+            --text-sub: #9ca3af;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { background-color: var(--bg-base); color: var(--text-main); height:100vh; overflow:hidden; display:flex; flex-direction:column; }
+        
+        .nav-bar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding: 10px 20px; background: rgba(15,23,42,0.96);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+            z-index:1000; flex-shrink: 0;
+        }
+        .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.1rem; color:var(--text-main); }
+        .badge-1dd {
+            background: linear-gradient(135deg, var(--accent-rose), var(--accent-amber));
+            color: #fff; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 800;
+        }
+        .nav-links { display:flex; gap:8px; align-items:center; }
+        .nav-btn {
+            display:inline-flex; align-items:center; gap:6px; padding: 6px 12px;
+            background: rgba(31,41,55,0.8); border: 1px solid var(--border);
+            border-radius: 7px; color: var(--text-sub); text-decoration:none; font-size:0.8rem; font-weight:600;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(6,182,212,0.15); border-color: var(--accent-cyan); color: var(--accent-cyan);
+        }
+        .nav-btn.return-btn {
+            background: rgba(139,92,246,0.15); border-color: var(--accent-purple); color: #c4b5fd;
+        }
+
+        .main-container {
+            flex: 1; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden;
+        }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+        }
+
+        .view-panel {
+            position: relative; width: 100%; height: 100%; border-right: 1px solid var(--border);
+        }
+        #gisMap, #nexusGraph { width: 100%; height: 100%; }
+
+        .hud-overlay {
+            position: absolute; top: 14px; left: 14px; z-index: 500;
+            background: rgba(15,23,42,0.88); border: 1px solid var(--border);
+            backdrop-filter: blur(10px); border-radius: 10px; padding: 12px 16px;
+            pointer-events: auto; max-width: 300px;
+        }
+        .hud-title { font-size: 0.82rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .hud-desc { font-size: 0.75rem; color: var(--text-sub); line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="brand">
+            <i class="fa-solid fa-circle-nodes" style="color:var(--accent-cyan);"></i>
+            <span>1DD Focus NEXUS Hub</span>
+            <span class="badge-1dd">8 Villages</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn"><i class="fa-solid fa-table-cells"></i> 1DD Matrix</a>
+            <a href="visualize_nexus.html" class="nav-btn active"><i class="fa-solid fa-circle-nodes"></i> 1DD NEXUS</a>
+            <a href="eda_dashboard.html" class="nav-btn"><i class="fa-solid fa-chart-pie"></i> 1DD Analytics</a>
+            <a href="../dipankar/visualize_nexus.html" class="nav-btn" style="border-color:var(--accent-amber); color:var(--accent-amber);"><i class="fa-solid fa-globe"></i> Dipankar NEXUS</a>
+            <a href="../index.html" class="nav-btn return-btn"><i class="fa-solid fa-house"></i> Main Portal</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Left: Full GIS Spatial Sector View -->
+        <div class="view-panel">
+            <div class="hud-overlay">
+                <div class="hud-title"><i class="fa-solid fa-map-location-dot"></i> Spatial Village Clusters</div>
+                <div class="hud-desc">Interactive Leaflet GIS mapping 120 contacts across the 8 key focus sectors in Rangachakua & Jamuguri region.</div>
+            </div>
+            <div id="gisMap"></div>
+        </div>
+
+        <!-- Right: Physics Relational Social Graph -->
+        <div class="view-panel" style="border-right:none;">
+            <div class="hud-overlay">
+                <div class="hud-title"><i class="fa-solid fa-diagram-project"></i> Relational Village Orbit</div>
+                <div class="hud-desc">Physics simulation showing node gravitation around the 8 focal village centroids. Drag or zoom to explore.</div>
+            </div>
+            <div id="nexusGraph"></div>
+        </div>
+    </div>
+
+    <script>
+        const CONTACTS = [{"id": "C0083", "name": "Anu Nayak", "village": "Rangachakua", "address": "Rangachakua", "phone1": "+918453923421", "phone2": "918011139185.0", "notes": "", "lat": 26.83514002157699, "lng": 92.74736794268625}, {"id": "C0098", "name": "Aryan Bonita", "village": "Rangachakua", "address": "President R Ghoror Pora Rangachakua Fale Jaute 2-3 No Ghor Right", "phone1": "+919394100250", "phone2": "", "notes": "", "lat": 26.83537655326468, "lng": 92.74817779404778}, {"id": "C0099", "name": "Asha Devi", "village": "Rangachakua", "address": "Petrol Pumpr Pora Rangachakua Fale Ahute Echo Van Roi Thoka Khali Ghor Tu", "phone1": "+919395705655", "phone2": "", "notes": "", "lat": 26.835169050727966, "lng": 92.74776800040006}, {"id": "C0322", "name": "Dulumoni", "village": "Rangachakua", "address": "Rangachakua Deep Tent", "phone1": "+918822819123", "phone2": "", "notes": "", "lat": 26.83409380423833, "lng": 92.74712149830285}, {"id": "C0409", "name": "Jayanta Borah", "village": "Rangachakua", "address": "Lucky R Ghoror Pora Rangachakua Road 3 No Ghor", "phone1": "+919957187886", "phone2": "", "notes": "", "lat": 26.83597772409232, "lng": 92.74749776043848}, {"id": "C0436", "name": "Jiten Sawtal", "village": "Rangachakua", "address": "Bel Tolor Pora Rangachakua Falor Ghor Khon", "phone1": "+918073482135", "phone2": "", "notes": "", "lat": 26.833806695602682, "lng": 92.74727690373192}, {"id": "C0485", "name": "Karina", "village": "Rangachakua", "address": "All In One Store Par Hoi Right Side Potharor Major Ghor, Rangachakua Centre", "phone1": "+916001669574", "phone2": "", "notes": "", "lat": 26.83437572294472, "lng": 92.7488494439266}, {"id": "C0521", "name": "Labanya Devi", "village": "Rangachakua", "address": "Rangachakua 3rd Eyet Dibo Lage", "phone1": "+918135851851", "phone2": "", "notes": "", "lat": 26.834659803995404, "lng": 92.74687993022039}, {"id": "C0758", "name": "Padumi Das", "village": "Rangachakua", "address": "Rangachakua LP School drain", "phone1": "+917002991300", "phone2": "", "notes": "", "lat": 26.834610635812382, "lng": 92.74644478741037}, {"id": "C0906", "name": "Putola Da Rangachakua", "village": "Rangachakua", "address": "", "phone1": "+916002390457", "phone2": "", "notes": "", "lat": 26.83264927678835, "lng": 92.74882009262049}, {"id": "C0942", "name": "Rangachakua Bia Kanu Da", "village": "Rangachakua", "address": "", "phone1": "+917896886255", "phone2": "", "notes": "", "lat": 26.832381743133478, "lng": 92.74639190355994}, {"id": "C0958", "name": "Rashmirekha", "village": "Rangachakua", "address": "Rangachakua Rinku Dar Dukan Wife", "phone1": "+916003186126", "phone2": "", "notes": "", "lat": 26.834098433641117, "lng": 92.7498407930998}, {"id": "C1053", "name": "Sabita", "village": "Rangachakua", "address": "Naamghorr Pora Rangachakua Road Left Ghor", "phone1": "+916000759575", "phone2": "", "notes": "", "lat": 26.83430586215456, "lng": 92.74883542437321}, {"id": "C1099", "name": "Sarita Parlor Rangachakua", "village": "Rangachakua", "address": "", "phone1": "+918851854694", "phone2": "", "notes": "", "lat": 26.832341238725967, "lng": 92.74676658083125}, {"id": "C1153", "name": "Sofia Kharia", "village": "Rangachakua", "address": "Rangachakua / Hatingabori water supply", "phone1": "+918812026852", "phone2": "", "notes": "", "lat": 26.833062773322144, "lng": 92.74969961826675}, {"id": "C1161", "name": "Sophia Khati", "village": "Rangachakua", "address": "Rangachakua Agripam Road, Potharor Ghor Khon", "phone1": "+916003243554", "phone2": "", "notes": "", "lat": 26.834892908704866, "lng": 92.74643006765112}, {"id": "C1224", "name": "Tannu Chetry", "village": "Rangachakua", "address": "School To Rangachakua Road Right Side 100M", "phone1": "+916901598314", "phone2": "", "notes": "", "lat": 26.834543039047226, "lng": 92.74703584625371}, {"id": "C0036", "name": "Amir Biswakarma", "village": "1 No. Batamari", "address": "1 No. Batamari JCB Ye Khonda Pukhurir Kaxot", "phone1": "+918638679696", "phone2": "", "notes": "", "lat": 26.81744132456789, "lng": 92.73616724919951}, {"id": "C0059", "name": "Anjali Munda", "village": "1 No. Batamari", "address": "1 No. Batamari Notun Bahor Dukan", "phone1": "+916360345652", "phone2": "", "notes": "", "lat": 26.819477453395844, "lng": 92.73868066981267}, {"id": "C0090", "name": "Anupriya Munda", "village": "1 No. Batamari", "address": "1 No. Batamari Tiniali", "phone1": "+917099390437", "phone2": "", "notes": "", "lat": 26.820930965119487, "lng": 92.73911299345737}, {"id": "C0142", "name": "Bhakta Bh Tamang", "village": "1 No. Batamari", "address": "1 No. Batamari Aru Morisuti Last Ghor, Potharor Majorr Khergola Gaon Vulote Jua", "phone1": "+919365919761", "phone2": "", "notes": "", "lat": 26.81832855727737, "lng": 92.73803476288298}, {"id": "C0161", "name": "Bijoy Sharma", "village": "1 No. Batamari", "address": "1 No. Batamari", "phone1": "+918812063490", "phone2": "", "notes": "", "lat": 26.817789794665373, "lng": 92.73944956295375}, {"id": "C0231", "name": "Chandan Chetry", "village": "1 No. Batamari", "address": "1 No. Batamari Xumai Right Side 2nd Ghor / Wall And Grill Thoka", "phone1": "+916003423309", "phone2": "", "notes": "", "lat": 26.820748950476, "lng": 92.73975059628607}, {"id": "C0259", "name": "Deepa Devi", "village": "1 No. Batamari", "address": "1 No. Batamari Dukan", "phone1": "+919101097035", "phone2": "", "notes": "", "lat": 26.819165925699124, "lng": 92.73856498808573}, {"id": "C0457", "name": "Jyoti Chetry", "village": "1 No. Batamari", "address": "1 No. Batamari Road Right 3 No Ghor", "phone1": "+918822422890", "phone2": "", "notes": "", "lat": 26.819474728263792, "lng": 92.73818014070918}, {"id": "C0476", "name": "Kamal Newar", "village": "1 No. Batamari", "address": "1 No. Batamari LP School drain Fale Jua Jio Tower, Right 3rd Ghor", "phone1": "+919101604464", "phone2": "", "notes": "", "lat": 26.819885639658114, "lng": 92.73623404457662}, {"id": "C0488", "name": "Kashmiri Munda", "village": "1 No. Batamari", "address": "1 No. Batamari", "phone1": "+917099633249", "phone2": "", "notes": "", "lat": 26.820981489357536, "lng": 92.73645614350215}, {"id": "C0704", "name": "Neha Lama", "village": "1 No. Batamari", "address": "1 No. Batamari Tower Road Dukan Par Hoi Right Ghor", "phone1": "+919395255899", "phone2": "", "notes": "", "lat": 26.81983837343812, "lng": 92.73899372450535}, {"id": "C0809", "name": "Poli Sarmah", "village": "1 No. Batamari", "address": "1 No. Batamari Dukan", "phone1": "+916000150540", "phone2": "", "notes": "", "lat": 26.82047717034622, "lng": 92.73790738899145}, {"id": "C0847", "name": "Priya Chetry", "village": "1 No. Batamari", "address": "1 No. Batamari, Assamese Dukanr Usorote Ghor", "phone1": "+918472962885", "phone2": "", "notes": "", "lat": 26.81755656366907, "lng": 92.73933804323563}, {"id": "C0875", "name": "Puja Newar", "village": "1 No. Batamari", "address": "1 No. Batamari Shiv Mondir, 5 Toka Pabo Ase", "phone1": "+918812061674", "phone2": "", "notes": "", "lat": 26.819307121436843, "lng": 92.73942360151761}, {"id": "C0929", "name": "Raju Da 1 No Batamari", "village": "1 No. Batamari", "address": "Vagawat", "phone1": "+918638026466", "phone2": "", "notes": "", "lat": 26.81756227373854, "lng": 92.73716919900293}, {"id": "C1094", "name": "Saraswati Chetry", "village": "1 No. Batamari", "address": "1 No Batamarire Goi Potharor Kaxor Bagan Thoka Ghor, , 2 Khon Scooty 1khon Bike", "phone1": "+918453373173", "phone2": "", "notes": "", "lat": 26.819582900428873, "lng": 92.7375868573551}, {"id": "C1113", "name": "Sewali Biswas", "village": "1 No. Batamari", "address": "1 No. Batamari Assamese Dukan", "phone1": "+916901593605", "phone2": "", "notes": "", "lat": 26.819566917759328, "lng": 92.7397364953938}, {"id": "C0001", "name": "2 No Batamari Bia Photo", "village": "2 No. Batamari", "address": "", "phone1": "+918474022359", "phone2": "", "notes": "", "lat": 26.810240698375715, "lng": 92.73522149314451}, {"id": "C0002", "name": "Unnamed Contact #2", "village": "2 No. Batamari", "address": "2 No. Batamari Road Notun Kesa Ghor Tu, Potharor Agor", "phone1": "+918473867579", "phone2": "", "notes": "Contact name not identifiable", "lat": 26.812486866382738, "lng": 92.73300457718778}, {"id": "C0003", "name": "Unnamed Contact #3", "village": "2 No. Batamari", "address": "2 No. Batamari Road Koborstanr Usoror Road", "phone1": "+916002052313", "phone2": "", "notes": "Contact name not identifiable", "lat": 26.812206548370053, "lng": 92.73618303534698}, {"id": "C0096", "name": "Arun Bhuyan", "village": "2 No. Batamari", "address": "2 No. Batamari Road, Left 4 No Ghor. Papumonir Ghoror Usrot", "phone1": "+919859159695", "phone2": "", "notes": "", "lat": 26.81188273413507, "lng": 92.7347736475892}, {"id": "C0254", "name": "Debajit Nath", "village": "2 No. Batamari", "address": "Papu Moni / 2 No. Batamari Road Left 1st", "phone1": "+919678615463", "phone2": "", "notes": "", "lat": 26.8130480448715, "lng": 92.73609999326715}, {"id": "C0366", "name": "Hasina Begum", "village": "2 No. Batamari", "address": "2 No. Batamari Road Notun Ghor", "phone1": "+917638086674", "phone2": "", "notes": "", "lat": 26.811981444760807, "lng": 92.73307079670893}, {"id": "C0407", "name": "Jatin Newar/2 No Batamari Bia Photo", "village": "2 No. Batamari", "address": "", "phone1": "+919864110574", "phone2": "", "notes": "", "lat": 26.81117998238347, "lng": 92.73405826158648}, {"id": "C0450", "name": "Junaki Saikia", "village": "2 No. Batamari", "address": "2 No. Batamari Jua Rastat Lastr Ghor", "phone1": "+918011789190", "phone2": "", "notes": "", "lat": 26.813676925207027, "lng": 92.73630818892714}, {"id": "C0512", "name": "Kuldeep Newar 2 No Batamari, Wedding", "village": "2 No. Batamari", "address": "", "phone1": "+918822120668", "phone2": "", "notes": "", "lat": 26.81377353470236, "lng": 92.73498868625192}, {"id": "C0560", "name": "Madhusmita Baruah", "village": "2 No. Batamari", "address": "2no Batamarir Dolongr Tolor Gari Thoka Ghor, Lila Khura", "phone1": "+919957436414", "phone2": "", "notes": "", "lat": 26.8129821338783, "lng": 92.73591066637604}, {"id": "C0736", "name": "Nirmola Munda", "village": "2 No. Batamari", "address": "2 No. Batamari Road Notun Ghor", "phone1": "+918453083966", "phone2": "", "notes": "", "lat": 26.81042401174073, "lng": 92.73656046860562}, {"id": "C0854", "name": "Priyanka Borah", "village": "2 No. Batamari", "address": "2 No. Batamari Jua Road Right Side Durga Mondir Par Hoi 100 m", "phone1": "+918011759264", "phone2": "", "notes": "", "lat": 26.811842838720988, "lng": 92.7349409356483}, {"id": "C0930", "name": "Raju Da 2no Batamari", "village": "2 No. Batamari", "address": "", "phone1": "+917896453540", "phone2": "", "notes": "", "lat": 26.81300736014475, "lng": 92.73357570228625}, {"id": "C1270", "name": "Upashana Sosa", "village": "2 No. Batamari", "address": "Gederijanor Pora 2 No. Batamari Jua Rastat Goi First Terningt", "phone1": "+917896052191", "phone2": "", "notes": "", "lat": 26.810664401397613, "lng": 92.73516207085359}, {"id": "C0015", "name": "Unnamed Contact #15", "village": "Agripam", "address": "Agripam Centre To Toubhanga, Girja Par Hoi Right Yellow Wall", "phone1": "+918761838843", "phone2": "", "notes": "Contact name not identifiable", "lat": 26.829878845858183, "lng": 92.75841914114821}, {"id": "C0032", "name": "Ambika Devi", "village": "Agripam", "address": "Agripam Beauty Parlour", "phone1": "+918486679167", "phone2": "", "notes": "", "lat": 26.828961473461753, "lng": 92.76126396237497}, {"id": "C0060", "name": "Anjali", "village": "Agripam", "address": "Agripam Petrol Pump Road drain", "phone1": "+918721075187", "phone2": "", "notes": "", "lat": 26.829689282986347, "lng": 92.75813195368573}, {"id": "C0201", "name": "Bishnu", "village": "Agripam", "address": "LP School R Pora Agripam Road Right 2 / 3 No Ghor", "phone1": "+916005013067", "phone2": "", "notes": "", "lat": 26.827442283806064, "lng": 92.76128911795004}, {"id": "C0211", "name": "Bobita", "village": "Agripam", "address": "Agripam LP School Road Left 2nd ghor / Ronga Ting", "phone1": "+917099362502", "phone2": "", "notes": "", "lat": 26.82967246388007, "lng": 92.75930556306086}, {"id": "C0257", "name": "Debika Guwala", "village": "Agripam", "address": "Agripam Centre Gawor Road 1st Right Ghor", "phone1": "+919707741655", "phone2": "", "notes": "", "lat": 26.829097527103983, "lng": 92.76072735879322}, {"id": "C0350", "name": "Gitanjali Dahal", "village": "Agripam", "address": "naamghor Par Hoi Tinialitur Pa Agripam Road Right Side Ghor", "phone1": "+918473080980", "phone2": "", "notes": "", "lat": 26.826279578349638, "lng": 92.76161059718908}, {"id": "C0489", "name": "Khagen Sharma", "village": "Agripam", "address": "Agripam Beauty Parlour", "phone1": "+918822089063", "phone2": "", "notes": "", "lat": 26.829831519346495, "lng": 92.76193358923463}, {"id": "C0517", "name": "Kunti Devi", "village": "Agripam", "address": "Agripam Sap Centre / drain Road 2nd Left Home", "phone1": "+918011961933", "phone2": "", "notes": "", "lat": 26.826692006342725, "lng": 92.76165072587018}, {"id": "C0520", "name": "Kusum Thapa", "village": "Agripam", "address": "LP School R Pora Agripam Road 5 No Ghor", "phone1": "+916001213507", "phone2": "", "notes": "", "lat": 26.8262589546008, "lng": 92.76069502869493}, {"id": "C0538", "name": "Leela Devi", "village": "Agripam", "address": "Agripam Jua Roadt Left Side Bogori Jupar Agor Ghor", "phone1": "+917635938451", "phone2": "", "notes": "", "lat": 26.82792797046436, "lng": 92.75912877079514}, {"id": "C0592", "name": "Manisha Bhattarai", "village": "Agripam", "address": "Agripam Road Girja Par Hoi Turning Tur Usorot Left RCC", "phone1": "+918099126018", "phone2": "", "notes": "", "lat": 26.828386754968236, "lng": 92.75945457494738}, {"id": "C0823", "name": "Prameeta", "village": "Agripam", "address": "Agripam Broiler farm khon / CPIM office R front", "phone1": "+916002486626", "phone2": "", "notes": "", "lat": 26.828454113665078, "lng": 92.75969081705179}, {"id": "C0856", "name": "Priyanka Gahatraj", "village": "Agripam", "address": "Agripam Tel Dipu Road Olop Goi Right Ghor, ,", "phone1": "+919365702610", "phone2": "", "notes": "", "lat": 26.82983409717432, "lng": 92.76012124136007}, {"id": "C0884", "name": "Puja Thapa", "village": "Agripam", "address": "Agripam Centre t Dolongr Kaxor Ghor", "phone1": "+918837055240", "phone2": "", "notes": "", "lat": 26.826747408302232, "lng": 92.76181026562922}, {"id": "C0933", "name": "Raju", "village": "Agripam", "address": "Agripam Road Olop Goi Nila Gate", "phone1": "+919365409916", "phone2": "", "notes": "", "lat": 26.829000565992338, "lng": 92.75893976232263}, {"id": "C1109", "name": "Seema Thapa", "village": "Agripam", "address": "Agripam Road Olop Goi Right Side, LP School R Pora", "phone1": "+919954623648", "phone2": "", "notes": "", "lat": 26.826336843065295, "lng": 92.76164436810606}, {"id": "C1161", "name": "Sophia Khati", "village": "Agripam", "address": "Rangachakua Agripam Road, Potharor Ghor Khon", "phone1": "+916003243554", "phone2": "", "notes": "", "lat": 26.829988691797137, "lng": 92.75890590565393}, {"id": "C1163", "name": "Sorup Thapa", "village": "Agripam", "address": "Gorbil School To Agripam Road Right 3rd Ghor, Belgos Agfale", "phone1": "+916900270324", "phone2": "", "notes": "", "lat": 26.82828439986799, "lng": 92.75950456342687}, {"id": "C1192", "name": "Sunita Bhattarai", "village": "Agripam", "address": "Charipukhuri Tinialir Pa Agripam Jua Road Last Ghor", "phone1": "+918473811222", "phone2": "", "notes": "", "lat": 26.826470831189848, "lng": 92.75837251036457}, {"id": "C1233", "name": "Tara", "village": "Agripam", "address": "Agripam Road Left 3 No Ghor", "phone1": "+919954535287", "phone2": "", "notes": "", "lat": 26.829791497430705, "lng": 92.76169362355927}, {"id": "C0225", "name": "Bubu Da Bou, Rampur", "village": "Rampur", "address": "", "phone1": "+916001830436", "phone2": "", "notes": "", "lat": 26.84035314560792, "lng": 92.75645318154433}, {"id": "C0957", "name": "Rashmirekha Surin", "village": "Rampur", "address": "Rampur", "phone1": "+919954624525", "phone2": "", "notes": "", "lat": 26.841744206928905, "lng": 92.75326218773156}, {"id": "C1259", "name": "Tulsi", "village": "Rampur", "address": "Rampurote Ghor", "phone1": "+919864511601", "phone2": "", "notes": "", "lat": 26.841732918133754, "lng": 92.75311747212338}, {"id": "C0501", "name": "Korishma Tamang", "village": "Randupam", "address": "Randupam", "phone1": "+919395075158", "phone2": "", "notes": "", "lat": 26.829205830078656, "lng": 92.77075334404816}, {"id": "C0506", "name": "Krishna Narzari", "village": "Randupam", "address": "Randupam Monoxa Puja Kora Ghor", "phone1": "+916901812952", "phone2": "", "notes": "", "lat": 26.8313176470017, "lng": 92.77078660139328}, {"id": "C0871", "name": "Puja Dev", "village": "Randupam", "address": "Randupam Drenor pasfalor Ghor", "phone1": "+918971144955", "phone2": "", "notes": "", "lat": 26.83292670891403, "lng": 92.77243647870202}, {"id": "C0932", "name": "Raju Rai", "village": "Randupam", "address": "Randupam drain, Xumai Left Vitoror Ghor, Kanchan Sirr front", "phone1": "+917628934113", "phone2": "", "notes": "", "lat": 26.83087958810138, "lng": 92.7706154811207}, {"id": "C0941", "name": "Randupam Muhon", "village": "Randupam", "address": "backside Road Putumoni Khura", "phone1": "+916901001518", "phone2": "", "notes": "", "lat": 26.83195439114747, "lng": 92.77188983547836}, {"id": "C1084", "name": "Sanju Sawra", "village": "Randupam", "address": "Nayak Gaon Olop Vitorole Xumua Ghortu, Randupamr Suwali Joni", "phone1": "+917086790062", "phone2": "", "notes": "", "lat": 26.832231039263313, "lng": 92.76966583995682}, {"id": "C1200", "name": "Sunuka Dev", "village": "Randupam", "address": "Randupam Online Kora Manuhoni, Silothia Jiten Khurar Kaxor", "phone1": "+918453923647", "phone2": "", "notes": "", "lat": 26.831005232337045, "lng": 92.77039599199901}, {"id": "C0024", "name": "Alisha Pradhan", "village": "Charipukhuri", "address": "Charipukhuri School R Kaxor Ghor Gorbil Fale", "phone1": "+918904323329", "phone2": "", "notes": "", "lat": 26.83854832617874, "lng": 92.76584322847589}, {"id": "C0131", "name": "Bandana Layo", "village": "Charipukhuri", "address": "Mera Layor Ghoror Pora Charipukhuri Road Left Last Ghor", "phone1": "+919387051246", "phone2": "", "notes": "", "lat": 26.84009568678767, "lng": 92.76375892547226}, {"id": "C0151", "name": "Bhoj Raj", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Rasta Xumai Sidha Ghorkhon, Bahor Tolor", "phone1": "+919902408238", "phone2": "", "notes": "", "lat": 26.83785697955973, "lng": 92.76555189290272}, {"id": "C0180", "name": "Binita Devi", "village": "Charipukhuri", "address": "Charipukhuri Xumua Sirr Ghor", "phone1": "+917670085339", "phone2": "", "notes": "", "lat": 26.837109324458645, "lng": 92.76313617525895}, {"id": "C0228", "name": "Chaiti", "village": "Charipukhuri", "address": "Charipukhuri Naamghor Par Hoi Vitorot Ghorkhon", "phone1": "+918971472932", "phone2": "", "notes": "", "lat": 26.840538758905556, "lng": 92.76487245925374}, {"id": "C0299", "name": "Dipak Adhikari", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Rastare Goi Mondir Tu", "phone1": "+918011269755", "phone2": "", "notes": "", "lat": 26.83709910699413, "lng": 92.76531753604404}, {"id": "C0325", "name": "Durga Upadhyay", "village": "Charipukhuri", "address": "Charipukhuri Xumua Rastat First Ghor", "phone1": "+919101839946", "phone2": "", "notes": "", "lat": 26.840228634963605, "lng": 92.76456471890337}, {"id": "C0356", "name": "Gopal Upadhyaya", "village": "Charipukhuri", "address": "Charipukhuri Road Ronga Ting RCC", "phone1": "+916002149971", "phone2": "", "notes": "", "lat": 26.83972971452884, "lng": 92.76356862570792}, {"id": "C0357", "name": "Gopika Bhattrai", "village": "Charipukhuri", "address": "Charipukhuri Naamghar Par Hoi Left Side Gorbil Jua Road 3 No Ghor Left", "phone1": "+918638863465", "phone2": "", "notes": "", "lat": 26.83838668667541, "lng": 92.76545523249659}, {"id": "C0391", "name": "Isha Sharma", "village": "Charipukhuri", "address": "Towerr Tolor Dukan Charipukhuri", "phone1": "+917086333004", "phone2": "", "notes": "", "lat": 26.839195515749807, "lng": 92.76583129941159}, {"id": "C0417", "name": "Jeeban Bhattarai", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Purona RCC Tu With Bagan", "phone1": "+916901613780", "phone2": "", "notes": "", "lat": 26.83985279012649, "lng": 92.76671444189772}, {"id": "C0484", "name": "Karan Sonar", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Road Vara Ghor, Centre Xunari Dukan", "phone1": "+919387561064", "phone2": "", "notes": "", "lat": 26.839510251894982, "lng": 92.76424663091343}, {"id": "C0514", "name": "Kumar Ghimire", "village": "Charipukhuri", "address": "Charipukhuri Drenor Kaxor Ghor, Near Tikaram Home", "phone1": "+919101413810", "phone2": "", "notes": "", "lat": 26.83824117294759, "lng": 92.76527489623064}, {"id": "C0620", "name": "Meera", "village": "Charipukhuri", "address": "Charipukhuri Xumai Green Gate Khon", "phone1": "+918453625736", "phone2": "", "notes": "", "lat": 26.837762483019755, "lng": 92.76381559391936}, {"id": "C0818", "name": "Poonam Chetry", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Gaon Grill Thoka Ghor", "phone1": "+919999403952", "phone2": "", "notes": "", "lat": 26.839829466407522, "lng": 92.76505711301805}, {"id": "C0828", "name": "Pranita Devi", "village": "Charipukhuri", "address": "Dakhin Charipukhuri Rastar Last Ghor", "phone1": "+916001322567", "phone2": "", "notes": "", "lat": 26.83780171158863, "lng": 92.76473095352627}, {"id": "C0876", "name": "Puja Newar", "village": "Charipukhuri", "address": "Charipukhuri Gelamal+Cycle Dukan", "phone1": "+918721914879", "phone2": "", "notes": "", "lat": 26.839681187971443, "lng": 92.7643197554222}, {"id": "C0952", "name": "Ranupriya", "village": "Charipukhuri", "address": "Charipukhuri LP School Teacher", "phone1": "+919957557644", "phone2": "", "notes": "", "lat": 26.8394123227448, "lng": 92.76622901837872}, {"id": "C1003", "name": "Rita", "village": "Charipukhuri", "address": "Charipukhuri Xumai Left Green Gate", "phone1": "+918453830641", "phone2": "", "notes": "", "lat": 26.840965394162208, "lng": 92.7666821042548}, {"id": "C1042", "name": "Rupali", "village": "Charipukhuri", "address": "Charipukhuri Xumai 3 No RCC Right Side", "phone1": "+919365910126", "phone2": "", "notes": "", "lat": 26.8383288859802, "lng": 92.76340008941995}, {"id": "C1062", "name": "Samiksha Gautam", "village": "Charipukhuri", "address": "Charipukhuri Xumai Sutalot Tiles", "phone1": "+917637880484", "phone2": "", "notes": "", "lat": 26.838028936194675, "lng": 92.76339617620431}, {"id": "C1097", "name": "Sarita Devi", "village": "Charipukhuri", "address": "Charipukhuri Naamghoror Usorot", "phone1": "+917086671758", "phone2": "", "notes": "", "lat": 26.839209096643405, "lng": 92.76529292138748}, {"id": "C1100", "name": "Sarita", "village": "Charipukhuri", "address": "Charipukhuri LP School Par Hoi Left Boga Ghor", "phone1": "+916901812972", "phone2": "", "notes": "", "lat": 26.837670198050215, "lng": 92.76538856136172}, {"id": "C1185", "name": "Sumit Nath", "village": "Charipukhuri", "address": "Charipukhuri Naamghor", "phone1": "+919395892976", "phone2": "", "notes": "", "lat": 26.838337863927457, "lng": 92.76595094854626}, {"id": "C1192", "name": "Sunita Bhattarai", "village": "Charipukhuri", "address": "Charipukhuri Tinialir Pa Agripam Jua Road Last Ghor", "phone1": "+918473811222", "phone2": "", "notes": "", "lat": 26.83953871145073, "lng": 92.76384491851582}, {"id": "C0031", "name": "Ambar Thapa", "village": "Morisuti", "address": "Morisuti Arab Pharmacy", "phone1": "+919854533144", "phone2": "", "notes": "", "lat": 26.8453450320428, "lng": 92.74279806552883}, {"id": "C0075", "name": "Ankita", "village": "Morisuti", "address": "Morisuti Centre R Kaxote Shiv Mondir R Kaxot", "phone1": "+919678168243", "phone2": "", "notes": "", "lat": 26.84414513955484, "lng": 92.74311103159611}, {"id": "C0132", "name": "Bandana Newar", "village": "Morisuti", "address": "Morisuti Road 1st RCC, Xar Dukan Par Hoi", "phone1": "+916001381044", "phone2": "", "notes": "", "lat": 26.845106266561864, "lng": 92.74182301250084}, {"id": "C0137", "name": "Barsha Giri", "village": "Morisuti", "address": "LP School R front Ghor Or Morisuti Bike Dukan", "phone1": "+916000264626", "phone2": "", "notes": "", "lat": 26.84372820472865, "lng": 92.74049258438262}, {"id": "C0139", "name": "Beena Tamang", "village": "Morisuti", "address": "Morisuti Panchayat Jua Rastat Trailer Khon, Samra Mundar Ghoror Usoror transformer", "phone1": "+919401074272", "phone2": "", "notes": "", "lat": 26.84507801813638, "lng": 92.74116441425723}, {"id": "C0142", "name": "Bhakta Bh Tamang", "village": "Morisuti", "address": "1 No. Batamari Aru Morisuti Last Ghor, Potharor Majorr Khergola Gaon Vulote Jua", "phone1": "+919365919761", "phone2": "", "notes": "", "lat": 26.844476000088296, "lng": 92.74261980683629}, {"id": "C0278", "name": "Diju Morisuti Wine Shop", "village": "Morisuti", "address": "", "phone1": "+916002362063", "phone2": "", "notes": "", "lat": 26.843871434722455, "lng": 92.7438215355784}, {"id": "C0301", "name": "Dipak Sarkar", "village": "Morisuti", "address": "LP School R front Ghor Or Morisuti Bike Garage", "phone1": "+917896692789", "phone2": "", "notes": "", "lat": 26.84496511165286, "lng": 92.7415023064511}, {"id": "C0470", "name": "Kalpana Das", "village": "Morisuti", "address": "Morisuti Mangagalboria Fale Jua Turning R Pharmacy Khon", "phone1": "+918011059111", "phone2": "", "notes": "", "lat": 26.846693133877622, "lng": 92.74235408513363}, {"id": "C0493", "name": "Khergola Gaon", "village": "Morisuti", "address": "Morisuti-Mangalboria Road Axot Gos", "phone1": "+917023299084", "phone2": "", "notes": "", "lat": 26.845752290177057, "lng": 92.7417499034023}, {"id": "C0600", "name": "Manju Devi", "village": "Morisuti", "address": "Lama Hotel Morisuti Centre", "phone1": "+916361689952", "phone2": "", "notes": "", "lat": 26.844836630472063, "lng": 92.7420511289607}, {"id": "C0660", "name": "Monoj Da", "village": "Morisuti", "address": "Morisuti-Khakanbasi Road Dukan", "phone1": "+918730871326", "phone2": "", "notes": "", "lat": 26.846188229589135, "lng": 92.7439946255801}, {"id": "C0731", "name": "Nirmal Newar", "village": "Morisuti", "address": "Xaror Dukan Khon, Morisuti Road", "phone1": "+919101072263", "phone2": "", "notes": "", "lat": 26.844594109583284, "lng": 92.74294823047919}, {"id": "C1029", "name": "Ruhi", "village": "Morisuti", "address": "Morisuti To Khalabasti Road Right Side RCC Tu Par Hoi Ghorkhon", "phone1": "+917099362172", "phone2": "", "notes": "", "lat": 26.844701506678664, "lng": 92.74115313714202}, {"id": "C1142", "name": "Sita Bhumij", "village": "Morisuti", "address": "Thapa Dukan Morisuti", "phone1": "+919954980049", "phone2": "", "notes": "", "lat": 26.844242533803488, "lng": 92.74287270068196}, {"id": "C1240", "name": "Thapa Store Morisuti Panchayat Par Hoi", "village": "Morisuti", "address": "", "phone1": "+919101646355", "phone2": "", "notes": "", "lat": 26.843870101798867, "lng": 92.74348583961532}];
+        const VILLAGES = {"rangachakua": {"id": "rangachakua", "name": "Rangachakua", "count": 17, "lat": 26.834, "lng": 92.748, "color": "#ef4444", "desc": "Primary trade corridor & center route", "csv_file": "data/rangachakua_contacts.csv", "csv_download": "data/rangachakua_contacts.csv"}, "1_no_batamari": {"id": "1_no_batamari", "name": "1 No. Batamari", "count": 17, "lat": 26.819, "lng": 92.738, "color": "#f97316", "desc": "Batamari Sector 1 (Tiniali / JCB Pukhuri / Dukan)", "csv_file": "data/1_no_batamari_contacts.csv", "csv_download": "data/1_no_batamari_contacts.csv"}, "2_no_batamari": {"id": "2_no_batamari", "name": "2 No. Batamari", "count": 14, "lat": 26.812, "lng": 92.735, "color": "#eab308", "desc": "Batamari Sector 2 (Koborstan Road / Potharor Agor)", "csv_file": "data/2_no_batamari_contacts.csv", "csv_download": "data/2_no_batamari_contacts.csv"}, "agripam": {"id": "agripam", "name": "Agripam", "count": 21, "lat": 26.828, "lng": 92.76, "color": "#10b981", "desc": "Agripam Centre, Petrol Pump Road, Girja Par", "csv_file": "data/agripam_contacts.csv", "csv_download": "data/agripam_contacts.csv"}, "rampur": {"id": "rampur", "name": "Rampur", "count": 3, "lat": 26.842, "lng": 92.755, "color": "#06b6d4", "desc": "Rampur residential perimeter & north route", "csv_file": "data/rampur_contacts.csv", "csv_download": "data/rampur_contacts.csv"}, "randupam": {"id": "randupam", "name": "Randupam", "count": 7, "lat": 26.831, "lng": 92.771, "color": "#3b82f6", "desc": "Randupam Monoxa Puja / Drenor Pasfal", "csv_file": "data/randupam_contacts.csv", "csv_download": "data/randupam_contacts.csv"}, "charipukhuri": {"id": "charipukhuri", "name": "Charipukhuri", "count": 25, "lat": 26.839, "lng": 92.765, "color": "#8b5cf6", "desc": "Charipukhuri School & Dakhin Charipukhuri Rasta", "csv_file": "data/charipukhuri_contacts.csv", "csv_download": "data/charipukhuri_contacts.csv"}, "morisuti": {"id": "morisuti", "name": "Morisuti", "count": 16, "lat": 26.845, "lng": 92.742, "color": "#ec4899", "desc": "Morisuti Arab Pharmacy, Shiv Mondir, RCC Road", "csv_file": "data/morisuti_contacts.csv", "csv_download": "data/morisuti_contacts.csv"}};
+
+        // Leaflet GIS
+        const map = L.map('gisMap').setView([26.8320, 92.7520], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO',
+            maxZoom: 18
+        }).addTo(map);
+
+        const markers = L.markerClusterGroup({ maxClusterRadius: 40 });
+        CONTACTS.forEach(c => {
+            const v = Object.values(VILLAGES).find(item => item.name === c.village) || { color: '#06b6d4' };
+            const icon = L.divIcon({
+                className: 'custom-pin',
+                html: `<div style="background:${v.color}; width:12px; height:12px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 8px ${v.color};"></div>`,
+                iconSize: [14, 14]
+            });
+            const m = L.marker([c.lat, c.lng], { icon: icon });
+            m.bindPopup(`
+                <div style="font-family:sans-serif; font-size:12px; color:#111;">
+                    <strong style="color:${v.color};">${c.name}</strong><br>
+                    <b>Village:</b> ${c.village}<br>
+                    <b>Address:</b> ${c.address || 'N/A'}<br>
+                    <b>Phone:</b> <a href="tel:${c.phone1}">${c.phone1}</a>
+                </div>
+            `);
+            markers.addLayer(m);
+        });
+        map.addLayer(markers);
+
+        // Vis-Network Graph
+        const nodes = [];
+        const edges = [];
+
+        Object.values(VILLAGES).forEach(v => {
+            nodes.push({
+                id: 'V_' + v.id,
+                label: v.name + '\n(' + v.count + ')',
+                color: { background: v.color, border: '#ffffff' },
+                shape: 'dot',
+                size: 26,
+                font: { color: '#ffffff', size: 12, face: 'Inter', multi: 'html' }
+            });
+        });
+
+        CONTACTS.forEach((c, idx) => {
+            const cId = 'C_' + c.id + '_' + idx;
+            nodes.push({
+                id: cId,
+                label: c.name,
+                color: { background: '#1e293b', border: '#06b6d4' },
+                shape: 'dot',
+                size: 8,
+                font: { color: '#cbd5e1', size: 9 }
+            });
+
+            const v = Object.values(VILLAGES).find(item => item.name === c.village);
+            if (v) {
+                edges.push({
+                    from: cId,
+                    to: 'V_' + v.id,
+                    color: { color: v.color, opacity: 0.4 },
+                    width: 1.5
+                });
+            }
+        });
+
+        const container = document.getElementById('nexusGraph');
+        const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+        const options = {
+            physics: {
+                stabilization: true,
+                barnesHut: { gravitationalConstant: -2400, springLength: 55, springConstant: 0.04 }
+            },
+            interaction: { hover: true, zoomView: true, dragNodes: true }
+        };
+        new vis.Network(container, data, options);
+    </script>
+</body>
+</html>
