@@ -6,7 +6,8 @@ from collections import Counter
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(BASE_DIR, 'data', 'new_contacts.csv')
-OUTPUT_PATH = os.path.join(BASE_DIR, 'visualizations', 'spatial_network_nexus.html')
+OUTPUT_PATH = os.path.join(BASE_DIR, 'dipankar', 'index.html')
+
 
 GEO_COORDS = {
     'Rangachakua': [26.7324, 92.9372],
@@ -310,11 +311,11 @@ html_content = f"""<!DOCTYPE html>
                     <i data-lucide="contact" class="w-4 h-4 text-indigo-400"></i>
                     <span>📋 Contacts Portal</span>
                 </a>
-                <a href="visualize_contacts_nexus.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 transition">
+                <a href="../visualizations/visualize_contacts_nexus.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 transition">
                     <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i>
                     <span>🌐 NEXUS Hub</span>
                 </a>
-                <a href="eda_dashboard.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 transition">
+                <a href="../visualizations/eda_dashboard.html" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 transition">
                     <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
                     <span>📈 EDA Hub</span>
                 </a>

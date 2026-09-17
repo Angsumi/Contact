@@ -3,19 +3,19 @@
 A privacy-focused, high-performance personal contact intelligence and spatial analytics dashboard. Transforms raw contact archives into interactive knowledge graphs, geospatial density maps, and exploratory visualizations.
 
 🚀 **Live Deployment (GitHub Pages)**:
-- 📋 **Contacts Manager (Main)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
-- 📍 **Spatial Field Nexus (New 1,279 Dataset)**: [https://angsumi.online/Contact/visualizations/spatial_network_nexus.html](https://angsumi.online/Contact/visualizations/spatial_network_nexus.html)
-- 🌐 **NEXUS Visualizer (Original 606 Dataset)**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
+- 📋 **Contacts Manager (Main Portal)**: [https://angsumi.online/Contact/](https://angsumi.online/Contact/)
+- 📍 **Dipankar Field Matrix (`/dipankar`)**: [https://angsumi.online/Contact/dipankar/](https://angsumi.online/Contact/dipankar/)
+- 🌐 **NEXUS Visualizer (Original Dataset)**: [https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html](https://angsumi.online/Contact/visualizations/visualize_contacts_nexus.html)
 - 📈 **EDA Analytics Hub**: [https://angsumi.online/Contact/visualizations/eda_dashboard.html](https://angsumi.online/Contact/visualizations/eda_dashboard.html)
 
 ---
 
 ## 🔗 Inter-Dashboard Cross Navigation
 All portals include integrated top navigation bars enabling instant switching between views:
-- From **Contacts Manager**: Click `📊 Analytics`, `📍 Spatial Field Nexus`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
-- From **Spatial Field Nexus**: Click `📋 Contacts Portal`, `🌐 NEXUS Hub`, or `📈 EDA Hub`.
-- From **NEXUS Visualizer**: Click `📋 Contacts`, `📍 Field Nexus`, or `📈 EDA Hub`.
-- From **EDA Analytics Hub**: Click `📋 Contacts Manager`, `📍 Spatial Field Nexus`, or `🌐 NEXUS Visualizer`.
+- From **Contacts Manager**: Click `📊 Analytics`, `📍 Dipankar Field Matrix`, `🌐 NEXUS Visualizer`, or `📈 EDA Hub`.
+- From **Dipankar Field Matrix (`/dipankar`)**: Click `📋 Contacts Portal`, `🌐 NEXUS Hub`, or `📈 EDA Hub`.
+- From **NEXUS Visualizer**: Click `📋 Contacts`, `📍 Dipankar`, or `📈 EDA Hub`.
+- From **EDA Analytics Hub**: Click `📋 Contacts Manager`, `📍 Dipankar Field Matrix`, or `🌐 NEXUS Visualizer`.
 
 ## 📁 Repository Structure
 
@@ -27,6 +27,9 @@ Contact/
 ├── template.html                # Base template for generating index.html
 ├── README.md                    # Project documentation
 │
+├── dipankar/                    # Dedicated folder for the 1,279 field contacts app
+│   └── index.html               # Dipankar Field Matrix dashboard (accessible at /dipankar)
+│
 ├── data/                        # Datasets and archives
 │   ├── new_contacts.csv         # New 1,279 field-verified contacts dataset
 │   ├── contacts.csv             # Cleaned & de-duplicated contacts dataset (606 records)
@@ -34,12 +37,11 @@ Contact/
 │   └── dleted_contact.csv       # Archived deleted / merged records
 │
 ├── visualizations/              # Standalone interactive visualization dashboards
-│   ├── spatial_network_nexus.html     # Spatial Field Nexus (1,279 Records GIS & Network)
 │   ├── visualize_contacts_nexus.html  # NEXUS Intelligence & Spatial Graph (606 Records)
 │   └── eda_dashboard.html       # 9 Multi-Disciplinary Exploratory Visualizations
 │
 ├── scripts/                     # Python ETL pipelines & development servers
-│   ├── generate_micro_spatial_nexus.py # Generator for Spatial Field Nexus dashboard
+│   ├── generate_micro_spatial_nexus.py # Generator for /dipankar dashboard
 │   ├── generate_nexus_dashboard.py     # Generator for NEXUS dashboard
 │   ├── build_index.py           # Injects CSV data into template to build index.html
 │   ├── build_visualizer.py      # Spatial ETL & metadata enricher
@@ -60,7 +62,7 @@ Contact/
 
 ## 🚀 Key Features
 
-- **Spatial Field Nexus (`visualizations/spatial_network_nexus.html`)**:
+- **Dipankar Field Matrix (`/dipankar`)**:
   - **1,279 Contact Field Analytics**: Landmark-level address parsing with 1,060 explicit landmark routes.
   - **Geospatial Village Micro-Clustering**: Leaflet GIS map with interactive pin-clustering covering Khakanbasti, Ajarguri, Charipukhuri, Agripam, Gorbil, Rangachakua, Morisuti, Batamari, and surrounding sectors.
   - **Physics Social Graph**: Vis-Network graph mapping contacts directly to their village clusters.
