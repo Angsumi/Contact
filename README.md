@@ -3,7 +3,7 @@
 A privacy-focused, high-performance personal contact intelligence and spatial analytics dashboard. Transforms raw contact archives into interactive knowledge graphs, geospatial density maps, and exploratory visualizations.
 
 🚀 **Live Deployment (GitHub Pages)**:
-- 🏘️ **1DD 8-Village Focus Suite (`/1dd`)**:
+- 🏘️ **1DD 9-Village Focus Suite (`/1dd`)**:
   - 📍 **1DD Focus Matrix**: [https://angsumi.online/Contact/1dd/](https://angsumi.online/Contact/1dd/)
   - 🌐 **1DD Focus NEXUS Graph**: [https://angsumi.online/Contact/1dd/visualize_nexus.html](https://angsumi.online/Contact/1dd/visualize_nexus.html)
   - 📈 **1DD Focus Analytics & Carrier Audit**: [https://angsumi.online/Contact/1dd/eda_dashboard.html](https://angsumi.online/Contact/1dd/eda_dashboard.html)
@@ -34,20 +34,21 @@ Contact/
 ├── template.html                # Base template for generating index.html
 ├── README.md                    # Project documentation
 │
-├── 1dd/                         # 8 Key Focus Villages Suite & isolated downloads
+├── 1dd/                         # 9 Key Focus Villages Suite & isolated downloads
 │   ├── index.html               # 1DD Field Matrix & CSV download hub
-│   ├── visualize_nexus.html     # Dedicated 8-village GIS & physics network graph
-│   ├── eda_dashboard.html       # 8-village demographic & carrier breakdown
+│   ├── visualize_nexus.html     # Dedicated 9-village GIS & physics network graph
+│   ├── eda_dashboard.html       # 9-village demographic & carrier breakdown
 │   └── data/                    # Web-ready downloadable village CSVs
-│       ├── rangachakua_contacts.csv
+│       ├── rampur_hatinga_contacts.csv
+│       ├── santipur_hatinga_contacts.csv
 │       ├── 1_no_batamari_contacts.csv
-│       ├── 2_no_batamari_contacts.csv
 │       ├── agripam_contacts.csv
-│       ├── rampur_contacts.csv
 │       ├── randupam_contacts.csv
-│       ├── charipukhuri_contacts.csv
+│       ├── rangachakua_contacts.csv
+│       ├── ratnapur_hatinga_contacts.csv
+│       ├── joypur_hatinga_contacts.csv
 │       ├── morisuti_contacts.csv
-│       └── all_8_villages_contacts.csv
+│       └── all_9_villages_contacts.csv
 │
 ├── dipankar/                    # Dedicated folder for the 1,279 field contacts suite
 │   ├── index.html               # Dipankar Field Matrix dashboard (accessible at /dipankar)

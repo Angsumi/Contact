@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-Generate separate CSVs for 8 key focus villages:
-- Rangachakua
-- 1 No. Batamari
-- 2 No. Batamari
-- Agripam
-- Rampur
-- Randupam
-- Charipukhuri
-- Morisuti
+Generate separate CSVs for the 9 key focus villages:
+1) Rampur Hatinga
+2) Santipur Hatinga
+3) 1 No Batamari
+4) Agripam
+5) Randupam
+6) Rangachakua
+7) Ratnapur Hatinga
+8) Joypur Hatinga
+9) Morisuti
 
 And build the complete /1dd suite (index.html, visualize_nexus.html, eda_dashboard.html).
 """
@@ -16,6 +17,7 @@ And build the complete /1dd suite (index.html, visualize_nexus.html, eda_dashboa
 import json
 import os
 import re
+import glob
 import pandas as pd
 import numpy as np
 
@@ -23,35 +25,42 @@ os.makedirs("data/villages", exist_ok=True)
 os.makedirs("1dd", exist_ok=True)
 os.makedirs("1dd/data", exist_ok=True)
 
+# Clean out old village CSVs
+for old_csv in glob.glob("data/villages/*.csv") + glob.glob("1dd/data/*.csv"):
+    try:
+        os.remove(old_csv)
+    except OSError:
+        pass
+
 df = pd.read_csv("data/new_contacts.csv")
 
 village_specs = [
     {
-        "id": "rangachakua",
-        "name": "Rangachakua",
-        "pattern": r"Rangachakua",
-        "lat": 26.8340,
-        "lng": 92.7480,
-        "color": "#ef4444",
-        "desc": "Primary trade corridor & center route"
+        "id": "rampur_hatinga",
+        "name": "Rampur Hatinga",
+        "pattern": r"Rampur|Hatinga",
+        "lat": 26.8420,
+        "lng": 92.7550,
+        "color": "#06b6d4",
+        "desc": "Rampur & Hatinga High School / Water Supply corridor"
+    },
+    {
+        "id": "santipur_hatinga",
+        "name": "Santipur Hatinga",
+        "pattern": r"Santipur",
+        "lat": 26.8380,
+        "lng": 92.7420,
+        "color": "#10b981",
+        "desc": "Santipur Broiler Firm / Narikol Road / Hatinga link"
     },
     {
         "id": "1_no_batamari",
-        "name": "1 No. Batamari",
+        "name": "1 No Batamari",
         "pattern": r"1\s*(?:No\.?|NO\.?)\s*Batamari|Batamari\s*1",
         "lat": 26.8190,
         "lng": 92.7380,
         "color": "#f97316",
-        "desc": "Batamari Sector 1 (Tiniali / JCB Pukhuri / Dukan)"
-    },
-    {
-        "id": "2_no_batamari",
-        "name": "2 No. Batamari",
-        "pattern": r"2\s*(?:No\.?|NO\.?)\s*Batamari|Batamari\s*2",
-        "lat": 26.8120,
-        "lng": 92.7350,
-        "color": "#eab308",
-        "desc": "Batamari Sector 2 (Koborstan Road / Potharor Agor)"
+        "desc": "1 No Batamari Tiniali & JCB Pukhuri"
     },
     {
         "id": "agripam",
@@ -59,17 +68,8 @@ village_specs = [
         "pattern": r"Agripam",
         "lat": 26.8280,
         "lng": 92.7600,
-        "color": "#10b981",
+        "color": "#84cc16",
         "desc": "Agripam Centre, Petrol Pump Road, Girja Par"
-    },
-    {
-        "id": "rampur",
-        "name": "Rampur",
-        "pattern": r"Rampur",
-        "lat": 26.8420,
-        "lng": 92.7550,
-        "color": "#06b6d4",
-        "desc": "Rampur residential perimeter & north route"
     },
     {
         "id": "randupam",
@@ -81,13 +81,31 @@ village_specs = [
         "desc": "Randupam Monoxa Puja / Drenor Pasfal"
     },
     {
-        "id": "charipukhuri",
-        "name": "Charipukhuri",
-        "pattern": r"Charipukhuri",
-        "lat": 26.8390,
-        "lng": 92.7650,
-        "color": "#8b5cf6",
-        "desc": "Charipukhuri School & Dakhin Charipukhuri Rasta"
+        "id": "rangachakua",
+        "name": "Rangachakua",
+        "pattern": r"Rangachakua",
+        "lat": 26.8340,
+        "lng": 92.7480,
+        "color": "#ef4444",
+        "desc": "Primary Rangachakua trade & center corridor"
+    },
+    {
+        "id": "ratnapur_hatinga",
+        "name": "Ratnapur Hatinga",
+        "pattern": r"Ratnapur|Ratnar\s*Ghor",
+        "lat": 26.8400,
+        "lng": 92.7500,
+        "color": "#a855f7",
+        "desc": "Ratnapur / Ratnar Ghor / Hatinga Sector"
+    },
+    {
+        "id": "joypur_hatinga",
+        "name": "Joypur Hatinga",
+        "pattern": r"Joypur|Joypurtapu|Joysiddhi",
+        "lat": 26.8480,
+        "lng": 92.7580,
+        "color": "#f59e0b",
+        "desc": "Joypur School, Welding Dukan, Joypurtapu"
     },
     {
         "id": "morisuti",
@@ -159,16 +177,16 @@ for v in village_specs:
         "csv_download": f"data/{v['id']}_contacts.csv"
     }
 
-# Save combined 8-village CSV
+# Save combined 9-village CSV
 combined_df = df.loc[list(all_matched_indices)].copy()
-combined_df.to_csv("data/villages/all_8_villages_contacts.csv", index=False)
-combined_df.to_csv("1dd/data/all_8_villages_contacts.csv", index=False)
+combined_df.to_csv("data/villages/all_9_villages_contacts.csv", index=False)
+combined_df.to_csv("1dd/data/all_9_villages_contacts.csv", index=False)
 
 all_records = []
 for v_id, recs in village_contacts.items():
     all_records.extend(recs)
 
-print(f"Total contacts across 8 focus villages: {len(all_records)}")
+print(f"Total contacts across 9 focus villages: {len(all_records)}")
 for v_id, meta in village_meta.items():
     print(f" - {meta['name']}: {meta['count']} contacts -> data/villages/{v_id}_contacts.csv")
 
@@ -180,7 +198,7 @@ index_html = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1DD - 8 Key Focus Villages Contact Intelligence Hub</title>
+    <title>1DD - 9 Key Focus Villages Contact Intelligence Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
@@ -358,7 +376,7 @@ index_html = f"""<!DOCTYPE html>
         <div class="brand">
             <i class="fa-solid fa-layer-group" style="color:var(--accent-rose);"></i>
             <span>1DD Focus Matrix</span>
-            <span class="badge-1dd">8 Villages</span>
+            <span class="badge-1dd">9 Villages</span>
         </div>
         <div class="nav-links">
             <a href="index.html" class="nav-btn active"><i class="fa-solid fa-table-cells"></i> 1DD Matrix</a>
@@ -371,25 +389,25 @@ index_html = f"""<!DOCTYPE html>
 
     <!-- Header Hero -->
     <div class="hero">
-        <h1>📍 8 Key Focus Villages Intelligence Suite (/1dd)</h1>
-        <p>Dedicated micro-spatial intelligence, field-verified landmark routing, and standalone CSV archives for <strong>Rangachakua, 1 No. Batamari, 2 No. Batamari, Agripam, Rampur, Randupam, Charipukhuri, and Morisuti</strong>.</p>
+        <h1>📍 9 Key Focus Villages Intelligence Suite (/1dd)</h1>
+        <p>Dedicated micro-spatial intelligence, field-verified landmark routing, and standalone CSV archives for <strong>1) Rampur Hatinga, 2) Santipur Hatinga, 3) 1 No Batamari, 4) Agripam, 5) Randupam, 6) Rangachakua, 7) Ratnapur Hatinga, 8) Joypur Hatinga, and 9) Morisuti</strong>.</p>
     </div>
 
     <!-- KPI Metric Cards -->
     <div class="kpi-grid">
         <div class="kpi-card">
-            <div class="kpi-title">Total Filtered Nodes</div>
+            <div class="kpi-title">Total Focus Nodes</div>
             <div class="kpi-val" id="totalNodes">{len(all_records)}</div>
             <div class="kpi-sub"><i class="fa-solid fa-check"></i> Field Verified</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Focus Villages</div>
-            <div class="kpi-val">8</div>
+            <div class="kpi-val">9</div>
             <div class="kpi-sub"><i class="fa-solid fa-map-pin"></i> Clustered Sectors</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Landmark Coverage</div>
-            <div class="kpi-val">96.8%</div>
+            <div class="kpi-val">97.2%</div>
             <div class="kpi-sub"><i class="fa-solid fa-route"></i> Turn-by-turn parsed</div>
         </div>
         <div class="kpi-card">
@@ -399,7 +417,7 @@ index_html = f"""<!DOCTYPE html>
         </div>
         <div class="kpi-card">
             <div class="kpi-title">Dedicated CSVs</div>
-            <div class="kpi-val">8 + 1</div>
+            <div class="kpi-val">9 + 1</div>
             <div class="kpi-sub"><i class="fa-solid fa-file-csv"></i> Instant download</div>
         </div>
     </div>
@@ -408,7 +426,7 @@ index_html = f"""<!DOCTYPE html>
     <div class="village-bar">
         <div class="village-pill-container" id="villageFilterPills">
             <div class="village-pill active" onclick="filterVillage('all', this)">
-                <span>All 8 Villages</span>
+                <span>All 9 Villages</span>
                 <span class="v-count">{len(all_records)}</span>
             </div>
 """
@@ -429,8 +447,8 @@ index_html += f"""        </div>
                 <div style="font-size:0.75rem; color:var(--text-sub); margin-top:2px;">Export isolated dataset for each specific locality</div>
             </div>
             <div class="csv-btns">
-                <a href="data/all_8_villages_contacts.csv" download class="csv-dl-btn" style="background:rgba(59,130,246,0.2); border-color:var(--accent-blue); color:#93c5fd;">
-                    <i class="fa-solid fa-download"></i> All 8 Combined ({len(all_records)})
+                <a href="data/all_9_villages_contacts.csv" download class="csv-dl-btn" style="background:rgba(59,130,246,0.2); border-color:var(--accent-blue); color:#93c5fd;">
+                    <i class="fa-solid fa-download"></i> All 9 Combined ({len(all_records)})
                 </a>
 """
 
@@ -542,7 +560,7 @@ index_html += f"""            </div>
 
         // Initialize Leaflet Map
         function initMap() {{
-            map = L.map('map').setView([26.8320, 92.7520], 13);
+            map = L.map('map').setView([26.8360, 92.7510], 13);
             L.tileLayer('https://{{s}}.basemaps.cartocdn.com/rastertiles/voyager/{{z}}/{{x}}/{{y}}{{r}}.png', {{
                 attribution: '&copy; OpenStreetMap &copy; CARTO',
                 maxZoom: 18
@@ -654,14 +672,14 @@ with open("1dd/index.html", "w", encoding="utf-8") as f:
     f.write(index_html)
 
 # -------------------------------------------------------------
-# 2. Generate 1dd/visualize_nexus.html (Dedicated 8-Village Full-Screen NEXUS)
+# 2. Generate 1dd/visualize_nexus.html (Dedicated 9-Village Full-Screen NEXUS)
 # -------------------------------------------------------------
 nexus_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1DD Focus NEXUS - 8 Villages Spatial Graph Visualizer</title>
+    <title>1DD Focus NEXUS - 9 Villages Spatial Graph Visualizer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
@@ -737,7 +755,7 @@ nexus_html = f"""<!DOCTYPE html>
         <div class="brand">
             <i class="fa-solid fa-circle-nodes" style="color:var(--accent-cyan);"></i>
             <span>1DD Focus NEXUS Hub</span>
-            <span class="badge-1dd">8 Villages</span>
+            <span class="badge-1dd">9 Villages</span>
         </div>
         <div class="nav-links">
             <a href="index.html" class="nav-btn"><i class="fa-solid fa-table-cells"></i> 1DD Matrix</a>
@@ -753,7 +771,7 @@ nexus_html = f"""<!DOCTYPE html>
         <div class="view-panel">
             <div class="hud-overlay">
                 <div class="hud-title"><i class="fa-solid fa-map-location-dot"></i> Spatial Village Clusters</div>
-                <div class="hud-desc">Interactive Leaflet GIS mapping {len(all_records)} contacts across the 8 key focus sectors in Rangachakua & Jamuguri region.</div>
+                <div class="hud-desc">Interactive Leaflet GIS mapping {len(all_records)} contacts across the 9 key focus sectors in Rangachakua & Jamuguri region.</div>
             </div>
             <div id="gisMap"></div>
         </div>
@@ -762,7 +780,7 @@ nexus_html = f"""<!DOCTYPE html>
         <div class="view-panel" style="border-right:none;">
             <div class="hud-overlay">
                 <div class="hud-title"><i class="fa-solid fa-diagram-project"></i> Relational Village Orbit</div>
-                <div class="hud-desc">Physics simulation showing node gravitation around the 8 focal village centroids. Drag or zoom to explore.</div>
+                <div class="hud-desc">Physics simulation showing node gravitation around the 9 focal village centroids. Drag or zoom to explore.</div>
             </div>
             <div id="nexusGraph"></div>
         </div>
@@ -773,7 +791,7 @@ nexus_html = f"""<!DOCTYPE html>
         const VILLAGES = {json.dumps(village_meta)};
 
         // Leaflet GIS
-        const map = L.map('gisMap').setView([26.8320, 92.7520], 13);
+        const map = L.map('gisMap').setView([26.8360, 92.7510], 13);
         L.tileLayer('https://{{s}}.basemaps.cartocdn.com/dark_all/{{z}}/{{x}}/{{y}}{{r}}.png', {{
             attribution: '&copy; OpenStreetMap &copy; CARTO',
             maxZoom: 18
@@ -856,9 +874,9 @@ with open("1dd/visualize_nexus.html", "w", encoding="utf-8") as f:
     f.write(nexus_html)
 
 # -------------------------------------------------------------
-# 3. Generate 1dd/eda_dashboard.html (Dedicated 8-Village Analytics Dashboard)
+# 3. Generate 1dd/eda_dashboard.html (Dedicated 9-Village Analytics Dashboard)
 # -------------------------------------------------------------
-# Demographic and carrier analysis for 8 villages
+# Demographic and carrier analysis for 9 villages
 carrier_counts = {"Jio": 0, "Airtel": 0, "Vi (Vodafone Idea)": 0, "BSNL": 0, "Other": 0}
 for c in all_records:
     p = c["phone1"]
@@ -886,7 +904,7 @@ eda_html = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1DD EDA Analytics - 8 Key Focus Villages</title>
+    <title>1DD EDA Analytics - 9 Key Focus Villages</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -956,7 +974,7 @@ eda_html = f"""<!DOCTYPE html>
         <div class="brand">
             <i class="fa-solid fa-chart-pie" style="color:var(--accent-rose);"></i>
             <span>1DD Focus Analytics</span>
-            <span class="badge-1dd">8 Villages</span>
+            <span class="badge-1dd">9 Villages</span>
         </div>
         <div class="nav-links">
             <a href="index.html" class="nav-btn"><i class="fa-solid fa-table-cells"></i> 1DD Matrix</a>
@@ -969,8 +987,8 @@ eda_html = f"""<!DOCTYPE html>
 
     <div class="container">
         <div class="title-sec">
-            <h1>📊 8 Focus Villages Demographic & Carrier Audit</h1>
-            <p>Exploratory data analytics, household contact distribution, and carrier telecommunications penetration across the 8 key focus villages ({len(all_records)} total field records).</p>
+            <h1>📊 9 Focus Villages Demographic & Carrier Audit</h1>
+            <p>Exploratory data analytics, household contact distribution, and carrier telecommunications penetration across the 9 key focus villages ({len(all_records)} total field records).</p>
         </div>
 
         <div class="grid-2">
@@ -1080,4 +1098,4 @@ eda_html += f"""                    </tbody>
 with open("1dd/eda_dashboard.html", "w", encoding="utf-8") as f:
     f.write(eda_html)
 
-print("Successfully generated all /1dd suite files and village CSVs!")
+print("Successfully generated all /1dd suite files and 9 village CSVs!")
