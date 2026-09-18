@@ -357,12 +357,13 @@ index_html = f"""<!DOCTYPE html>
         .v-badge {{
             display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
         }}
-        .dial-btn {{
-            display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px;
-            background: rgba(16,185,129,0.15); border: 1px solid var(--accent-emerald);
-            border-radius: 6px; color: var(--accent-emerald); text-decoration: none; font-weight: 700; font-size: 0.75rem;
+        .wa-btn {{
+            display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px;
+            background: rgba(37, 211, 102, 0.15); border: 1px solid #25d366;
+            border-radius: 6px; color: #25d366; text-decoration: none; font-weight: 700; font-size: 0.75rem;
+            transition: all 0.2s ease;
         }}
-        .dial-btn:hover {{ background: var(--accent-emerald); color: #000; }}
+        .wa-btn:hover {{ background: #25d366; color: #000; }}
 
         /* Map and Graphs */
         #map {{ height: 320px; width: 100%; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; }}
@@ -531,13 +532,17 @@ index_html += f"""            </div>
             filtered.forEach((c, idx) => {{
                 const tr = document.createElement('tr');
                 const vMeta = Object.values(VILLAGE_META).find(v => v.name === c.village) || {{ color: '#06b6d4' }};
+                let cleanWa = (c.phone1 || '').replace(/[^0-9]/g, '');
+                if (cleanWa.length === 10) cleanWa = '91' + cleanWa;
+                const waBtn = cleanWa ? `<a href="https://wa.me/${{cleanWa}}" target="_blank" rel="noopener noreferrer" class="wa-btn"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : '—';
+                
                 tr.innerHTML = `
                     <td style="color:var(--text-sub);">${{idx+1}}</td>
                     <td><strong>${{c.name}}</strong></td>
                     <td><span class="v-badge" style="background:${{vMeta.color}}22; color:${{vMeta.color}}; border:1px solid ${{vMeta.color}}66;">${{c.village}}</span></td>
                     <td style="font-size:0.78rem; color:#cbd5e1;">${{c.address || '<em style="color:#6b7280">No explicit landmark</em>'}}</td>
                     <td><code style="color:var(--accent-cyan); font-weight:700;">${{c.phone1 || '—'}}</code></td>
-                    <td>${{c.phone1 ? `<a href="tel:${{c.phone1}}" class="dial-btn"><i class="fa-solid fa-phone"></i> Call</a>` : '—'}}</td>
+                    <td>${{waBtn}}</td>
                 `;
                 tbody.appendChild(tr);
             }});
@@ -580,6 +585,8 @@ index_html += f"""            </div>
 
             records.forEach(c => {{
                 const vMeta = Object.values(VILLAGE_META).find(v => v.name === c.village) || {{ color: '#06b6d4' }};
+                let cleanWa = (c.phone1 || '').replace(/[^0-9]/g, '');
+                if (cleanWa.length === 10) cleanWa = '91' + cleanWa;
                 const icon = L.divIcon({{
                     className: 'custom-pin',
                     html: `<div style="background:${{vMeta.color}}; width:12px; height:12px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 6px ${{vMeta.color}};"></div>`,
@@ -592,7 +599,8 @@ index_html += f"""            </div>
                         <strong style="color:${{vMeta.color}};">${{c.name}}</strong><br>
                         <b>Village:</b> ${{c.village}}<br>
                         <b>Address:</b> ${{c.address || 'N/A'}}<br>
-                        <b>Phone:</b> <a href="tel:${{c.phone1}}">${{c.phone1}}</a>
+                        <b>Phone:</b> <a href="tel:${{c.phone1}}">${{c.phone1}}</a><br>
+                        ${{cleanWa ? `<a href="https://wa.me/${{cleanWa}}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:4px; margin-top:5px; color:#16a34a; font-weight:700; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : ''}}
                     </div>
                 `);
                 markersLayer.addLayer(m);
@@ -800,6 +808,8 @@ nexus_html = f"""<!DOCTYPE html>
         const markers = L.markerClusterGroup({{ maxClusterRadius: 40 }});
         CONTACTS.forEach(c => {{
             const v = Object.values(VILLAGES).find(item => item.name === c.village) || {{ color: '#06b6d4' }};
+            let cleanWa = (c.phone1 || '').replace(/[^0-9]/g, '');
+            if (cleanWa.length === 10) cleanWa = '91' + cleanWa;
             const icon = L.divIcon({{
                 className: 'custom-pin',
                 html: `<div style="background:${{v.color}}; width:12px; height:12px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 8px ${{v.color}};"></div>`,
@@ -811,7 +821,8 @@ nexus_html = f"""<!DOCTYPE html>
                     <strong style="color:${{v.color}};">${{c.name}}</strong><br>
                     <b>Village:</b> ${{c.village}}<br>
                     <b>Address:</b> ${{c.address || 'N/A'}}<br>
-                    <b>Phone:</b> <a href="tel:${{c.phone1}}">${{c.phone1}}</a>
+                    <b>Phone:</b> <a href="tel:${{c.phone1}}">${{c.phone1}}</a><br>
+                    ${{cleanWa ? `<a href="https://wa.me/${{cleanWa}}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:4px; margin-top:5px; color:#16a34a; font-weight:700; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : ''}}
                 </div>
             `);
             markers.addLayer(m);

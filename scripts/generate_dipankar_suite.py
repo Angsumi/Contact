@@ -503,9 +503,13 @@ html_index = f"""<!DOCTYPE html>
         function renderTable(data) {{
             const tbody = document.getElementById('contactTableBody');
             tbody.innerHTML = '';
-            data.slice(0, 300).forEach(c => {{
+            data.forEach(c => {{
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-800/40 transition';
+                tr.className = 'border-b border-slate-800/60 hover:bg-slate-800/40 transition text-xs';
+                let cleanWa = (c.p1 || '').replace(/[^0-9]/g, '');
+                if (cleanWa.length === 10) cleanWa = '91' + cleanWa;
+                let waBtn = cleanWa ? `<a href="https://wa.me/${{cleanWa}}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded border border-emerald-500/40 text-[10px] font-sans font-semibold transition inline-flex items-center gap-1">WhatsApp</a>` : '-';
+
                 tr.innerHTML = `
                     <td class="p-3 text-cyan-400 font-bold">${{c.id}}</td>
                     <td class="p-3 font-sans font-semibold text-white">${{c.name}}</td>
@@ -514,7 +518,7 @@ html_index = f"""<!DOCTYPE html>
                     <td class="p-3 text-emerald-400">${{c.p1}}</td>
                     <td class="p-3 text-slate-400">${{c.p2 || '-'}}</td>
                     <td class="p-3">
-                        <a href="tel:${{c.p1}}" class="px-2 py-1 bg-cyan-600/30 hover:bg-cyan-600 text-cyan-300 hover:text-white rounded border border-cyan-500/40 text-[10px] font-sans transition">Dial</a>
+                        ${{waBtn}}
                     </td>
                 `;
                 tbody.appendChild(tr);
