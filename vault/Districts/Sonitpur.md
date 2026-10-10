@@ -1,0 +1,245 @@
+---
+title: "Sonitpur"
+tags:
+  - district
+  - geo-hub
+  - district/sonitpur
+type: district
+contact_count: 223
+---
+
+# 🗺️ District: Sonitpur
+
+> [!info] District Hub
+> **223** contacts and **13** towns connected to **Sonitpur**.
+
+### 📍 Towns & Cities in Sonitpur
+[[Dhemaji]], [[Narayanpur]], [[Rangachakua]], [[Tezpur]], [[Jamugurihat]], [[Sootea]], [[Gohpur]], [[Guwahati]], [[Itakhola]], [[Morisuti]], [[Kusumtola]], [[Soibari]], [[Dhekiajuli]]
+
+### 👥 People in Sonitpur
+- [[Abhijit  Das]]  (*Teacher*) — Darrang College (DGCD)
+- [[Abhinabh  Baruah]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Abhishek Hazarika Hazarika]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Ajit  Payeng]]  (*President*) — Panchayat
+- [[Akash  Dahal]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Akash  Lamichane]]  (*Class-Mate*) — RHSS
+- [[Akashdeep  Baruti]]  (*Sinaki*)
+- [[Alfaz]]  (*Wallmate*) — Madhabdev University (MDU)
+- [[Am  Chetry]]  — Electrician
+- [[Amal  Jethai]]  (*Jethai*) — DAS
+- [[Aman  Bhattarai]]  (*Colleague*) — GenOne
+- [[Amoi]]  (*Amoi*)
+- [[Amraj  Bhujel]]  (*Senior*) — RHSS
+- [[Ananya  Medhi]]  (*Sinaki*) — Rangachakua
+- [[Anuj  Borah]]  (*Senior*) — Rajiv Gandhi University (RGU)
+- [[Arpan  Hazarika]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Arundhati  Patangia]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Baba]]  (*Manager*) — Khurar Bagan
+- [[Bapuji  Da]]  (*Relative*)
+- [[Bhagat  Tanty]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Bhaiti  Da]]  (*Sinaki*) — Bank
+- [[Bhanu  Pehi]] 
+- [[Bharat  Nath]]  (*Sinaki*) — AASU, BJP
+- [[Bhargav  Kakoti]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Bhargav Bharat Basnet]]  (*Neighbour*) — Bharat Khura
+- [[Bhargavi  Mahanta]]  (*Delhi, Sinaki*) — Archeology
+- [[Bhaskar  Da]]  (*Neighbour*)
+- [[Bibek  Pathak]]  (*Member*) — GenOne
+- [[Bibek  Pokhrel]]  (*Class-Mate*) — RHSS
+- [[Bijoya  Das]]  (*Relative, Khuri*) — DAS
+- [[Biju  Karki]]  (*Owner*) — Morisuti Mobile Repairing
+- [[Bikash  Tewari]]  (*Teacher, Friend*)
+- [[Biki  Daa]]  (*Relative*)
+- [[Bikram  Sibakota]]  (*Senior*) — RHSS
+- [[Biman  Tanty]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Bipul  Saikia]]  (*Teacher*) — Tyagbir Hem Baruah College (THB)
+- [[Biren  Borah]]  (*Agent, Sinaki, Relative*) — LIC
+- [[Bishal  Das]]  (*Sinaki, Scholar, Economics*) — Gauhati University (GU)
+- [[Bishal  Gahatraj]]  (*Sub-Inspector (SI), Class-Mate*) — Tyagbir Hem Baruah College (THB), Police
+- [[Biswajit  Das]]  (*Teacher, Owner*) — Coaching Itakhola
+- [[Biswajit  Neog]]  (*Teacher*)
+- [[Bole  Thapa]]  (*Owner*) — Ertiga
+- [[Bongsi  Das]]  (*Relative, Borta*) — DAS
+- [[Bora  Vindeu]]  (*Compounder, Relative*) — Ranachakua Hospital
+- [[Bornali Gym]]  (*Gym-Mate*) — GYM
+- [[Bubu  Dunduvi]]  — Bhauna
+- [[Chinmoy  Das]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Chiranjib  Basumatari]]  (*Junior*) — Darrang College (DGCD)
+- [[Chiranjita  Sharma]]  — SFI
+- [[Chirantanu  Saikia]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Chitara]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Dambaru  Acharya]]  (*Teacher, Relative, Khura*)
+- [[Deha]]  (*Relative, Brother, Neighbour*) — Bap Da
+- [[Dhan  Daa]]  (*Relative, Brother*)
+- [[Dhan Da Da]]  (*Driver*) — Dwijen Das
+- [[Dharani  Bhanu Chowk]] 
+- [[Dharani  Gautam]]  (*Member*) — GenOne
+- [[Dharma  Sarania]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Dharmaraj  Biswakarma]]  (*Member*) — GenOne
+- [[Dibya  Devi (Bidyapoti)]]  (*Member, Neighbour*) — Genoone
+- [[Dimpi  Dhunu]]  (*Neighbour*)
+- [[Dimpi  Mudoi]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Dinesh  Mahanta]]  (*Sinaki*) — Nam Dharma Samaj
+- [[Dipankar  Saikia]]  (*Neighbour*) — GYM
+- [[Dipu  Das]]  (*Relative, Brother*) — DAS
+- [[Dishant  Gautam]]  (*Neighbour, Sinaki*) — Salik Sir
+- [[Dul  Bhuyan]]  (*Owner*) — Xerox
+- [[Dul Jyotir  Bhaiti]] 
+- [[Gajen]]  (*Class-Mate*) — RHSS
+- [[Gaurab  Newar]]  (*Class-Mate*) — RHSS, Darrang College (DGCD), Rajiv Gandhi University (RGU)
+- [[Gaurab Khanal]]  (*Batch-Mate*) — Darrang College (DGCD)
+- [[Gaurav  Maa]] 
+- [[Gauri  Devi]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Geeta  Devi Bhujel]]  (*Sinaki*)
+- [[Gitu  Gym]]  (*Gym-Mate*) — GYM
+- [[Green]]  (*Neighbour*)
+- [[Gym  Man]]  (*Teacher*) — GYM
+- [[Heera  Sharma]]  (*Member*) — GenOne
+- [[Hillul Pratim  Nath Machine]]  — Rice Cutter
+- [[Himashree  Rainy]]  (*Class-Mate*) — Darrang College (DGCD)
+- [[Himashri  Rainy]]  (*Class-Mate*) — Darrang College (DGCD)
+- [[Hiranya Khura  Arunadaya]]  (*Owner*) — Arunudaya
+- [[Jeet  Nath]]  (*Junior, Sinaki*) — Darrang College (DGCD)
+- [[Jeni  Ba]]  (*Neighbour*)
+- [[Jit Sir  Tupia]]  (*Sinaki*) — SFI
+- [[Julu]] 
+- [[Jwngsree  Tewari]]  (*Sinaki, Bou*) — Bikash Da
+- [[Jyoti  Bordoloi]]  (*Neighbour*)
+- [[Jyoti  Medhi]] 
+- [[Jyotishman  Baruah]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Kangkana  Sarma]]  (*Neighbour*) — University Of Science And Technology Meghalaya (USTM)
+- [[Kanu  Das]] 
+- [[Karabi  Kalita]]  (*Class-Mate*) — Darrang College (DGCD)
+- [[Karuna  Chetry]]  (*Batch-Mate*) — Darrang College (DGCD), RHSS
+- [[Karuna  Papa]] 
+- [[Kaushik  Tez]]  (*Junior*) — Darrang College (DGCD)
+- [[Khagen  Agripam]]  — Flood
+- [[Khemraj  Biswakarma]]  — Gupsar AIR Force
+- [[Krishna  Devi]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Krishna  Kalita]]  — Deuta Logor
+- [[Krishna  Pandey]]  (*Sinaki*)
+- [[Krishna  Timsina]]  (*Member*) — GenOne
+- [[Kuhi  Neha]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Lakhi  Da]]  (*Neighbour*)
+- [[Lizzie]]  (*Relative, Sinaki*) — Tyagbir Hem Baruah College (THB)
+- [[Luhit  Dahal Panpur]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Luna  Nath]]  (*Sinaki, Relative*)
+- [[Luyum Semion  Narah]]  (*Neighbour*)
+- [[Madan Basnet]] 
+- [[Mahendra  Biswakarma]]  — Ashok Laylend
+- [[Maina  Lekha]]  (*Relative, Sister*) — DAS
+- [[Mainu  Saikia]]  (*Neighbour*) — Bank
+- [[Malobika  Mam]]  (*Professor, Teacher*) — Darrang College (DGCD)
+- [[Manalisha  Baa (Bikram)]]  (*PhD Scholar*) — Gauhati University (GU)
+- [[Manjil  Xoru Maina]]  (*Relative*)
+- [[Manjula  Uprety]]  — Gupsor
+- [[Manowar  arrif]]  (*Gym-Mate*) — GYM
+- [[Megha  Upadhyay]]  (*Class-Mate*) — RHSS
+- [[Milan  Chetry]]  (*Neighbour, Sinaki*) — Darrang College (DGCD)
+- [[Mintu  Pathak]]  (*Neighbour*)
+- [[Mohan Pathak Da]]  (*Senior*) — Rajiv Gandhi University (RGU)
+- [[Monalisa]]  — Happy Soul
+- [[Mondip  Das]]  (*Relative, Brother, Neighbour*) — DAS
+- [[Moni  Bhunya]]  (*Neighbour*)
+- [[Moni Bou  Bap Da]]  (*Neighbour, Relative*) — DAS
+- [[Monisha  Mam]]  (*Student, Professor, Teacher, Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Montu  Daaa]]  (*Relative*)
+- [[Mridul Khura  Tupia]]  (*Sinaki*) — Deuta Sinaki
+- [[Mridupabanb  Baruti]]  (*Senior*) — Darrang College (DGCD)
+- [[Mridusmita]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Mrigakshi  Saikia]]  (*Batch-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Mrigalshi  Father]] 
+- [[Mukesh  Gautam]]  (*Class-Mate*) — Charipukhuri LP School
+- [[Mukesh  Nepal]]  (*Sinaki*)
+- [[Nayan  Acharya]]  (*Manager*) — Oil Pump
+- [[Nayan  Bhuyan Geography]]  (*Professor*) — Tyagbir Hem Baruah College (THB)
+- [[Nichinta  Deuri]]  (*Student*) — Madhabdev University (MDU)
+- [[Nipam]]  (*Owner*) — Eureka, GenOne
+- [[Noor  Hussain]]  (*Student*) — Tyagbir Hem Baruah College (THB), Rajiv Gandhi University (RGU)
+- [[Pankaj  Darrang]]  (*PhD Scholar*) — Darrang College (DGCD), Gauhati University (GU)
+- [[Parag  Das]]  (*Neighbour*) — Rangachakua
+- [[Pinky  Bow]]  (*Relative*) — Mantu
+- [[Piyush  Agarwala]]  (*Doctor*)
+- [[Polasi  Paro]]  (*Class-Mate*) — RHSS
+- [[Popi]]  (*Student*)
+- [[Prabal  Hazarika]]  (*Sinaki*)
+- [[Prakash  Sir]]  (*Teacher*) — RHSS
+- [[Pranjal  Raam]]  (*Neighbour*) — Bhaona, Thana
+- [[Pranjit  Baruah]]  (*Owner*) — L&T PG
+- [[Prantar]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Prapti Priya  Gogoi]]  (*Junior, Colleague*) — Rajiv Gandhi University (RGU), Tyagbir Hem Baruah College (THB)
+- [[Prem Narayan  Goswami]]  (*Sinaki*) — IB
+- [[Priti  Maina]]  (*Relative*)
+- [[Pritu]]  (*Relative, Brother*) — DAS
+- [[Priya  Baa]]  (*Gym-Mate*) — GYM
+- [[Priyam  Aasu]] 
+- [[Priyam  Satyam Da Bou]] 
+- [[Puja  Milu]]  (*Neighbour*)
+- [[Punam  Biswakarma]]  (*Member*) — GenOne
+- [[Putou  Da]]  (*Relative*)
+- [[Putu  Dada]]  (*Relative, Brother*)
+- [[Putu  Khuri]] 
+- [[Rabismita]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Rahul  Bhattarai]]  (*Owner*) — Creative Vision English School
+- [[Rajib  Da Kusuntola]]  (*Sinaki*) — RSS
+- [[Rajib  Sharma]] 
+- [[Rajlakshmi  Basumatari]]  (*Professor, Teacher, Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Raju  Newar]]  (*Cashier*) — SBI Rangachakua
+- [[Raju Da Bagan]] 
+- [[Raktim  Star Health Insurance]]  (*Coordinator*) — Star Health Insurance
+- [[Ranjan  Kalita]]  (*Principal*) — Rangapara College
+- [[Ranu  Pehi]]  (*Relative*)
+- [[Rasna  Mam]]  (*Teacher, Professor*) — Tyagbir Hem Baruah College (THB)
+- [[Riki]]  (*Rangachakua*)
+- [[Rimjhim  Hazarika]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Rishma]]  (*Colleague*) — Tyagbir Hem Baruah College (THB)
+- [[Rismita Bezbaruah 🐄]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Rohan]]  (*Relative*) — Taoi
+- [[Rohan  Upadhyaya]]  (*Member*) — GenOne
+- [[Rohit  Biswakarma]]  (*Class-Mate*) — Rajiv Gandhi University (RGU)
+- [[Rohit  Dada]]  (*Sinaki*) — Rohit
+- [[Roshni Thapa]]  (*Member*) — Panchayat
+- [[Ruksana Sultana Ahmed]]  (*Class-Mate*) — Darrang College (DGCD), Rangapara College
+- [[Ruma (Mamun)  Keot]]  (*Neighbour*)
+- [[Rupak Pharmacy  Loratu]] 
+- [[Rupam  Kalita]] 
+- [[Rupam Jyoti  Nath]]  (*Junior*) — Darrang College (DGCD)
+- [[Rupjyoti  Amarakusa]]  (*Class-Mate*) — RHSS
+- [[Sagar]]  (*Class-Mate*) — RHSS
+- [[Samrat  Kar]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Sandipa  Sen]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Sangita  Mam]]  (*Teacher*) — Darrang College (DGCD), Tezpur University (TU)
+- [[Sanjib  Sharmah]] 
+- [[Sanju  Hostel]]  (*Student*) — Madhabdev University (MDU)
+- [[Santanu  Kusumtola]]  (*Relative, Brother*) — DAS
+- [[Santanu  Mahanta]]  — AASU
+- [[Sanu  Gharar]]  (*Class-Mate*) — Charipukhuri LP School
+- [[Saral Das (Bap)  Das]]  (*Relative*) — Sweety
+- [[Sarumaina]]  (*Relative*)
+- [[Shibu  Da]]  (*Neighbour*)
+- [[Shivangee Hazarika]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Shivani  Devi Rajiv]]  (*Student*) — Tyagbir Hem Baruah College (THB)
+- [[Sonali  Dev]]  (*Class-Mate*) — RHSS
+- [[Sonali  Xondikoi]] 
+- [[Sumit  Dev]]  (*Class-Mate*) — RHSS
+- [[Suprakash Dey]]  (*Colleague*) — Suprakash Dey, Tyagbir Hem Baruah College (THB)
+- [[Sutu  Daa]]  (*Relative*)
+- [[Suvrajit  Saikia]]  (*Class-Mate*) — Tyagbir Hem Baruah College (THB)
+- [[Swapan (Bamoni)  Das]]  (*Relative*) — Tipai Borta
+- [[Swarna (Bhanti)  Deka]]  (*Relative, Jethai*) — DAS
+- [[Sweety]]  (*Neighbour, Relative*)
+- [[Tanu  Sis]]  (*Member*) — GenOne
+- [[Tapan Da]]  (*Relative*) — Taoi
+- [[Tez  Newar]]  (*Owner*) — Mount Sinai
+- [[Tipai  Borta]]  (*Relative*)
+- [[Trisha  Das]]  (*Relative*)
+- [[Tulshi  Upadhyay]]  (*Teacher, Professor*) — Tyagbir Hem Baruah College (THB)
+- [[Tun  Gupal]] 
+- [[Tun  Tun]] 
+- [[Udip Krishna  Das]]  (*Relative, Brother*) — DAS
+- [[Upasana  Bhuyan Munu Ba]]  (*Neighbour*)
+- [[Xun  Da Krishna]] 
+- [[Yadav  Sarma]]  — Scientist
+
+---
+*Back to [[00 🌐 Contacts & Social Network Master Index]]*

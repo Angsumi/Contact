@@ -1,0 +1,177 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": false,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#district/sonitpur",
+      "color": {
+        "a": 1,
+        "rgb": 3900150
+      }
+    },
+    {
+      "query": "tag:#district/lakhimpur",
+      "color": {
+        "a": 1,
+        "rgb": 1096065
+      }
+    },
+    {
+      "query": "tag:#district/biswanath",
+      "color": {
+        "a": 1,
+        "rgb": 16096779
+      }
+    },
+    {
+      "query": "tag:#district/kamrup-metro",
+      "color": {
+        "a": 1,
+        "rgb": 9133302
+      }
+    },
+    {
+      "query": "tag:#district/dhemaji",
+      "color": {
+        "a": 1,
+        "rgb": 15485081
+      }
+    },
+    {
+      "query": "tag:#district/jorhat",
+      "color": {
+        "a": 1,
+        "rgb": 439956
+      }
+    },
+    {
+      "query": "tag:#district/nagaon",
+      "color": {
+        "a": 1,
+        "rgb": 16347926
+      }
+    },
+    {
+      "query": "tag:#district/sivasagar",
+      "color": {
+        "a": 1,
+        "rgb": 14753096
+      }
+    },
+    {
+      "query": "tag:#district/arunachal-pradesh",
+      "color": {
+        "a": 1,
+        "rgb": 1357990
+      }
+    },
+    {
+      "query": "tag:#district/udalguri",
+      "color": {
+        "a": 1,
+        "rgb": 8696854
+      }
+    },
+    {
+      "query": "tag:#district/dibrugarh",
+      "color": {
+        "a": 1,
+        "rgb": 6514417
+      }
+    },
+    {
+      "query": "tag:#district/karbi-anglong",
+      "color": {
+        "a": 1,
+        "rgb": 11032055
+      }
+    },
+    {
+      "query": "tag:#district/golaghat",
+      "color": {
+        "a": 1,
+        "rgb": 15381256
+      }
+    },
+    {
+      "query": "tag:#district/tinsukia",
+      "color": {
+        "a": 1,
+        "rgb": 165063
+      }
+    },
+    {
+      "query": "tag:#district/majuli",
+      "color": {
+        "a": 1,
+        "rgb": 2278750
+      }
+    },
+    {
+      "query": "tag:#district/barpeta",
+      "color": {
+        "a": 1,
+        "rgb": 16007006
+      }
+    },
+    {
+      "query": "tag:#district/darrang",
+      "color": {
+        "a": 1,
+        "rgb": 14251782
+      }
+    },
+    {
+      "query": "tag:#district/assam",
+      "color": {
+        "a": 1,
+        "rgb": 6583435
+      }
+    },
+    {
+      "query": "path:Organizations",
+      "color": {
+        "a": 1,
+        "rgb": 16766720
+      }
+    },
+    {
+      "query": "path:Districts",
+      "color": {
+        "a": 1,
+        "rgb": 16711935
+      }
+    },
+    {
+      "query": "path:Locations",
+      "color": {
+        "a": 1,
+        "rgb": 16744703
+      }
+    },
+    {
+      "query": "path:\"Circles & Roles\"",
+      "color": {
+        "a": 1,
+        "rgb": 32767
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.35,
+  "lineSizeMultiplier": 1.1,
+  "collapse-forces": false,
+  "centerStrength": 0.48,
+  "repelStrength": 16,
+  "linkStrength": 1,
+  "linkDistance": 45,
+  "scale": 0.06518518518518511,
+  "close": true
+}

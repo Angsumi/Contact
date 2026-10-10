@@ -62,6 +62,19 @@ Contact/
 │   ├── contacts.csv.bak         # Dataset backup
 │   └── dleted_contact.csv       # Archived deleted / merged records
 │
+│
+├── vault/                       # Obsidian Knowledge Graph Vault & Markdown Network
+│   ├── 00 🌐 Contacts & Social Network Master Index.md
+│   ├── People/                  # Markdown dossiers with YAML frontmatter
+│   ├── Organizations/           # Universities, companies, institutions
+│   ├── Districts/               # Administrative districts (Sonitpur, Kamrup, etc.)
+│   ├── Locations/               # Towns, centroids, and field coordinates
+│   ├── Circles & Roles/         # Kinship, academic tiers, peer circles
+│   ├── .obsidian/               # Obsidian workspace, graph settings, appearance presets
+│   ├── contacts.csv             # Underlying canonical contact data
+│   ├── generate_network.py      # Network generation & bi-directional linking script
+│   └── README.md                # Vault guide and Obsidian setup instructions
+│
 ├── visualizations/              # Standalone interactive visualization dashboards (606 records)
 │   ├── visualize_contacts_nexus.html  # NEXUS Intelligence & Spatial Graph (606 Records)
 │   └── eda_dashboard.html       # Multi-Disciplinary Exploratory Visualizations (606 Records)
@@ -84,6 +97,15 @@ Contact/
     ├── eda_07_surnames_distribution.png
     └── eda_08_positions_and_professions.png
 ```
+
+---
+
+## 🗂️ Obsidian Knowledge Graph Integration (`vault/`)
+
+The repository integrates a complete **Obsidian Knowledge Graph Vault** in the `vault/` directory:
+- **Bi-directional Linking**: Automatically cross-links individuals, organizations, geographic districts, villages, and kinship circles.
+- **Obsidian Graph View**: Open the `vault/` directory directly in [Obsidian](https://obsidian.md/) to navigate the interactive force-directed graph of contacts and affiliations.
+- **Automated Regeneration**: Run `python3 vault/generate_network.py` to rebuild or update all markdown notes directly from canonical CSV datasets.
 
 ---
 

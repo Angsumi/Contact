@@ -1,0 +1,24 @@
+---
+title: "Hemen  Deka"
+tags:
+  - contact
+  - person
+type: contact
+districts: []
+phone: "+91 86386 89332"
+email: ""
+---
+
+# 👤 Hemen  Deka
+
+### 📌 Overview
+- **Roles / Relationship**: —
+- **Organizations**: [[Gauhati University (GU)]]
+- **District / Region**: —
+- **Location**: —
+
+### 📞 Contact Details
+- **Primary Phone**: `+91 86386 89332`
+
+---
+*Part of [[00 🌐 Contacts & Social Network Master Index|Contacts & Social Network Master Index]]*
